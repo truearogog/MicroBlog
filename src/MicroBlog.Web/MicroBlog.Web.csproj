@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<UserSecretsId>aspnet-MicroBlog.Web-5c462bc8-193f-40b9-b049-c36745419151</UserSecretsId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="$(MicrosoftAspNetCoreVersion)" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="$(MicrosoftAspNetCoreVersion)" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="$(MicrosoftAspNetCoreVersion)" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="$(MicrosoftAspNetCoreVersion)" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="$(MicrosoftVisualStudioWebCodeGenerationDesignVersion)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(MicrosoftEntityFrameworkCoreVersion)" PrivateAssets="all" />
+		<PackageReference Include="NonFactors.Grid.Mvc6" Version="$(NonFactorsGridMvc6Version)" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="$(SwaggerVersion)" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="$(SwaggerVersion)" />
+	</ItemGroup>
+
+</Project>

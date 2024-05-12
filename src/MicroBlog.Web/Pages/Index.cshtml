@@ -1,0 +1,28 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <form method="post">
+        <div class="form-group">
+            <textarea asp-for="Input" class="summernote-input"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/summernote.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(function () {
+            SummernoteJs.init('.summernote-input', '/api/Image/Upload');
+        })
+    </script>
+}

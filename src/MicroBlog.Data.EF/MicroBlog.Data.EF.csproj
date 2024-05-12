@@ -1,0 +1,12 @@
+﻿ <Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+	    <PackageReference Include="AutoMapper" Version="$(AutoMapperVersion)" />
+	    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(MicrosoftEntityFrameworkCoreVersion)" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MicroBlog.Core\MicroBlog.Core.csproj" />
+    </ItemGroup>
+
+</Project>

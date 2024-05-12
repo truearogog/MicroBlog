@@ -1,0 +1,29 @@
+<Project>
+	<PropertyGroup>
+		<VersionPrefix>1.0.0</VersionPrefix>
+		<VersionSuffix></VersionSuffix>
+		<Authors>Artyom Strelkov;Nikita Kruglov</Authors>
+		<Company>Artyom Strelkov and Nikita Kruglov</Company>
+		<Copyright>Copyright © Artyom Strelkov and Nikita Kruglov 2023</Copyright>
+		<PackageLicenseExpression></PackageLicenseExpression>
+		<PackageProjectUrl></PackageProjectUrl>
+	</PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<AnalysisLevel>latest</AnalysisLevel>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+	<PropertyGroup>
+		<BuildWebCompiler2022Version>1.14.10</BuildWebCompiler2022Version>
+		<MicrosoftVisualStudioWebCodeGenerationDesignVersion>8.0.0</MicrosoftVisualStudioWebCodeGenerationDesignVersion>
+		<MicrosoftAspNetCoreVersion>8.0.0</MicrosoftAspNetCoreVersion>
+		<MicrosoftEntityFrameworkCoreVersion>8.0.0</MicrosoftEntityFrameworkCoreVersion>
+		<MicrosoftExtensionsDependencyInjectionVersion>8.0.0</MicrosoftExtensionsDependencyInjectionVersion>
+		<EFCoreBulkExtensionsVersion>8.0.0-rc.1.2</EFCoreBulkExtensionsVersion>
+		<AutoMapperVersion>12.0.1</AutoMapperVersion>
+		<NonFactorsGridMvc6Version>7.2.0</NonFactorsGridMvc6Version>
+		<SwaggerVersion>6.5.0</SwaggerVersion>
+	</PropertyGroup>
+</Project>
