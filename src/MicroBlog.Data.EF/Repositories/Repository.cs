@@ -13,7 +13,7 @@ namespace MicroBlog.Data.EF.Repositories
         protected IMapper Mapper = mapper;
         protected IConfigurationProvider MapperConfig => Mapper.ConfigurationProvider;
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedEnumerable<T>>? orderBy = null)
+        public virtual IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null)
         {
             var query = DbSet.AsNoTracking()
                 .ProjectTo<T>(MapperConfig);

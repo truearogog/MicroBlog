@@ -1,0 +1,26 @@
+﻿@{
+    void RenderThemeButton(string value, string icon, string name)
+    {
+        <li>
+            <button type="button" class="btn btn-link dropdown-item d-flex align-items-center" data-bs-theme-value="@value" aria-pressed="false">
+                <div class="d-flex justify-content-center theme-icon me-2"><i class="fa-solid @icon"></i></div>@name
+            </button>
+        </li>
+    }
+}
+
+<ul class="navbar-nav mx-2">
+    <li class="nav-item dropdown">
+        <button id="theme-switcher" class="nav-link text-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme">
+            <i id="theme-icon" class="fa-solid fa-sun"></i>
+            <span id="theme-text" class="visually-hidden">Toggle theme</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+        @{
+            RenderThemeButton("light", "fa-sun", "Light");
+            RenderThemeButton("dark", "fa-moon", "Dark");
+            RenderThemeButton("auto", "fa-circle-half-stroke", "Auto");
+        }
+        </ul>
+    </li>
+</ul>

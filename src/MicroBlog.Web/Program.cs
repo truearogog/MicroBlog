@@ -1,5 +1,10 @@
-using MicroBlog.Web.Data;
-using Microsoft.AspNetCore.Identity;
+using MicroBlog.Data.EF.Extensions;
+using MicroBlog.Data.EF.SQLServer;
+using MicroBlog.Identity.Extensions;
+using MicroBlog.Identity.Models;
+using MicroBlog.Identity.SQLServer;
+using MicroBlog.Services.Extensions;
+using MicroBlog.Web.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace MicroBlog.Web
@@ -10,14 +15,18 @@ namespace MicroBlog.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            builder.Services.AddServices();
+            builder.Services.AddAppEF<SQLServerAppDb>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("AppDb")
+                ?? throw new InvalidOperationException("Connection string 'AppDb' not found.")));
+
+            builder.Services.AddIdentityEF<SQLServerIdentityDb>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityDb")
+                ?? throw new InvalidOperationException("Connection string 'IdentityDb' not found.")));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<SQLServerIdentityDb>();
+
+            builder.Services.AddScoped<ImageService>();
 
             builder.Services.AddRazorPages();
             builder.Services.AddControllers();

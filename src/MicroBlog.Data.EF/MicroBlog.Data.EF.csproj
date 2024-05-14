@@ -3,6 +3,7 @@
     <ItemGroup>
 	    <PackageReference Include="AutoMapper" Version="$(AutoMapperVersion)" />
 	    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(MicrosoftEntityFrameworkCoreVersion)" PrivateAssets="all" />
+	    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="$(MicrosoftEntityFrameworkCoreVersion)" />
     </ItemGroup>
 
     <ItemGroup>

@@ -3,8 +3,8 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "summernote@0.8.20",
-      "destination": "wwwroot/summernote/"
+      "library": "jquery-throttle-debounce@1.1",
+      "destination": "wwwroot/lib/jquery-throttle-debounce/"
     }
   ]
 }

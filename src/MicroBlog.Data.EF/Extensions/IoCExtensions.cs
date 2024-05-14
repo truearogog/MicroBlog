@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using MicroBlog.Core.Repositories;
 using MicroBlog.Data.EF.Profiles;
+using MicroBlog.Data.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -36,7 +38,7 @@ namespace MicroBlog.Data.EF.Extensions
             ServiceLifetime scope = ServiceLifetime.Scoped) where T : DbContext, IAppDb
         {
             // Register repositories
-            services.Add(new ServiceDescriptor(typeof(IDeviceRepository), typeof(DeviceRepository), scope));
+            services.Add(new ServiceDescriptor(typeof(IPostRepository), typeof(PostRepository), scope));
 
             // Register services
             services.Add(new ServiceDescriptor(typeof(IAppDb), typeof(T), scope));

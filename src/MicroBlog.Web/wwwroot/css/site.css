@@ -1,24 +1,41 @@
-html {
-  font-size: 14px;
-}
-
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+}
+
+.note-editor.note-frame {
+    width: calc(100% - 200px);
+    margin: 0 auto;
+    color: var(--bs-body-color) !important;
+}
+
+.note-toolbar {
+    background: var(--bs-body-bg) !important;
+    border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 80px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 80px;
+    line-height: 60px;
+}
+
+.theme-icon {
+    width: 16px;
+    height: 16px;
 }
 
 .note-editor .dropdown-toggle::after {
@@ -32,3 +49,21 @@ body {
 .note-editor .note-modal-footer {
     box-sizing: content-box;
 }
+
+.profile-picture-preview-container {
+    width: 200px; /* Adjust the width of the container */
+    height: 200px; /* Adjust the height of the container */
+    overflow: hidden; /* Clip any overflowing content */
+    position: relative; /* Position the image */
+}
+
+.profile-picture-preview-container img {
+        width: 100%; /* Ensure the image takes up the full width of the container */
+        height: 100%; /* Ensure the image takes up the full height of the container */
+        object-fit: cover; /* Scale the image to cover the entire container while maintaining aspect ratio */
+        position: absolute; /* Position the image */
+        top: 50%; /* Center the image vertically */
+        left: 50%; /* Center the image horizontally */
+        transform: translate(-50%, -50%); /* Center the image using CSS transform */
+    }
+

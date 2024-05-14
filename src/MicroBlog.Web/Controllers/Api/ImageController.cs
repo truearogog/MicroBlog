@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MicroBlog.Web.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MicroBlog.Web.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ImageController(IWebHostEnvironment webHostEnvironment) : Controller
+    public class ImageController(IWebHostEnvironment webHostEnvironment, ImageService imageService) : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
+        private readonly ImageService _imageService = imageService;
 
         [HttpPost("Upload")]
         public async Task<IActionResult> Upload(IFormFile file)
@@ -16,21 +18,7 @@ namespace MicroBlog.Web.Controllers.Api
                 if (file == null || file.Length == 0)
                     return BadRequest("No file uploaded.");
 
-                var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
-                if (!Directory.Exists(uploadsFolder))
-                {
-                    Directory.CreateDirectory(uploadsFolder);
-                }
-                var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await file.CopyToAsync(fileStream);
-                }
-
-                // Return the URL of the uploaded image
-                var imageUrl = "/uploads/" + uniqueFileName;
+                var imageUrl = await _imageService.SaveImageAsync(file);
                 return Ok(imageUrl);
             }
             catch (Exception ex)

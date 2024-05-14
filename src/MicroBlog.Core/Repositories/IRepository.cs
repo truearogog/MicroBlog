@@ -4,7 +4,7 @@ namespace MicroBlog.Core.Repositories
 {
     public interface IRepository<T>
     {
-        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedEnumerable<T>>? orderBy = null);
+        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null);
         Task<T> Find(params object[] keys);
         Task Create(T model);
         Task CreateRange(IEnumerable<T> models);

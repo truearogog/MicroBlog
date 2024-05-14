@@ -1,0 +1,40 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="row">
+    <div class="col-md-4 mx-auto">
+        <form id="account" method="post">
+            <h1 class="h3 mb-3 fw-normal">@ViewData["Title"]</h1>
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="Input.Email" class="form-label">Email</label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                <label asp-for="Input.Password" class="form-label">Password</label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-check text-start my-3">
+                <label asp-for="Input.RememberMe" class="form-label">
+                    <input class="form-check-input" asp-for="Input.RememberMe" />
+                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                </label>
+            </div>
+            <div class="d-flex flex-column row-gap-3">
+                <button id="login-submit" type="submit" class="w-100 btn btn-primary">Log in</button>
+                <a id="forgot-password" class="w-100 btn btn-secondary" asp-page="./ForgotPassword">Forgot your password?</a>
+                <a asp-page="./Register" class="w-100 btn btn-secondary" asp-route-returnUrl="@Model.ReturnUrl">Register</a>
+                <a id="resend-confirmation" class="w-100 btn btn-secondary" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

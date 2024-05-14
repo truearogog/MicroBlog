@@ -1,6 +1,15 @@
 ﻿SummernoteJs = (function () {
     function init(selector, imageUploadUrl) {
         $(selector).summernote({
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']],
+            ],
             callbacks: {
                 onImageUpload: function (files) {
                     uploadImages(files, selector, imageUploadUrl);
