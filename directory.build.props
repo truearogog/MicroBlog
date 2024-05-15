@@ -21,9 +21,7 @@
 		<MicrosoftAspNetCoreVersion>8.0.0</MicrosoftAspNetCoreVersion>
 		<MicrosoftEntityFrameworkCoreVersion>8.0.0</MicrosoftEntityFrameworkCoreVersion>
 		<MicrosoftExtensionsDependencyInjectionVersion>8.0.0</MicrosoftExtensionsDependencyInjectionVersion>
-		<EFCoreBulkExtensionsVersion>8.0.0-rc.1.2</EFCoreBulkExtensionsVersion>
 		<AutoMapperVersion>12.0.1</AutoMapperVersion>
-		<NonFactorsGridMvc6Version>7.2.0</NonFactorsGridMvc6Version>
 		<SwaggerVersion>6.5.0</SwaggerVersion>
 		<AutoFixtureVersion>4.18.1</AutoFixtureVersion>
 	</PropertyGroup>

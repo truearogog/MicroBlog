@@ -4,6 +4,7 @@ using MicroBlog.Identity.Extensions;
 using MicroBlog.Identity.Models;
 using MicroBlog.Identity.SQLServer;
 using MicroBlog.Services.Extensions;
+using MicroBlog.Web.Middleware;
 using MicroBlog.Web.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -53,6 +54,8 @@ namespace MicroBlog.Web
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
+
+            app.UseMiddleware<UserLoggingMiddleware>();
 
             app.MapControllers();
             app.MapRazorPages();

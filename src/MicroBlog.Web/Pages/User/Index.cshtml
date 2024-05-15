@@ -1,4 +1,66 @@
-﻿@page
+﻿@page "{username}"
+@using Humanizer
 @model MicroBlog.Web.Pages.User.IndexModel
 @{
+
+}
+
+<div class="container d-flex column-gap-2 shadow p-3 mb-3">
+    <div class="profile-picture-container flex-shrink-0">
+        <img class="border" src="@Model.CurrentUser.ProfilePictureUrl" />
+    </div>
+    <div class="flex-grow-1">
+        <div class="d-flex align-items-end column-gap-2">
+            <h3 class="m-0">@Model.CurrentUser.UserName</h3>
+            @if (Model.CurrentUser.LastSeen.HasValue && DateTime.UtcNow.Subtract(Model.CurrentUser.LastSeen.Value).TotalMinutes < 1)
+            {
+                <p class="m-0 text-success fw-bolder">Online</p>
+            }
+            else
+            {
+                <p class="m-0 text-muted fw-bolder">Last seen @Model.CurrentUser.LastSeen.Humanize()</p>
+            }
+        </div>
+        <p>@Model.CurrentUser.Description</p>
+    </div>
+</div>
+
+<div class="d-flex column-gap-2 mb-3">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPostModal">
+        Create post
+    </button>
+</div>
+
+<partial name="Post/_PostFeed" model="@("/api/Post/FromUser", Model.CurrentUser.Id)" />
+
+<div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-fullscreen-md-down">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createPostModalLabel">Create post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post">
+                <div class="modal-body p-0">
+                    <div class="form-group">
+                        <textarea class="summernote-input"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/summernote.js" asp-append-version="true"></script>
+    <script src="~/js/post-feed.js" asp-append-version="true" ></script>
+    <script type="text/javascript">
+        $(function () {
+            SummernoteJs.init('.summernote-input', '/api/Image/Upload');
+        })
+    </script>
 }

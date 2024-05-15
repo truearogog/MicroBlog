@@ -5,4 +5,12 @@
 	    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(MicrosoftEntityFrameworkCoreVersion)" PrivateAssets="all" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Models\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MicroBlog.Core\MicroBlog.Core.csproj" />
+    </ItemGroup>
+
 </Project>

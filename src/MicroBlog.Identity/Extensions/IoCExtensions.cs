@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MicroBlog.Identity.Managers;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using IdentityDb = Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityDbContext<MicroBlog.Identity.Models.User>;
 
@@ -17,6 +18,9 @@ namespace MicroBlog.Identity.Extensions
         private static IServiceCollection RegisterServices<T>(this IServiceCollection services,
             ServiceLifetime scope = ServiceLifetime.Scoped) where T : IdentityDb
         {
+            // Register services
+            services.Add(new ServiceDescriptor(typeof(UserManager), typeof(UserManager), scope));
+
             return services;
         }
     }

@@ -1,0 +1,22 @@
+﻿@using MicroBlog.Core.Models
+@model Post
+
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="d-flex mb-2">
+            <div class="post-profile-picture-container me-2">
+                <img src="@Model.UserProfilePictureUrl" />
+            </div>
+            <div>
+                <h6 class="mb-1">@Model.UserName</h6>
+                <p class="text-muted">@Model.Created</p>
+            </div>
+        </div>
+
+        <h4 class="mb-2">@Model.Title</h4>
+
+        @Html.Raw(Model.Content)
+
+        <a href="#" class="d-none"></a>
+    </div>
+</div>

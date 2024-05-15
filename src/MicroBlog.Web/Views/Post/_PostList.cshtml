@@ -1,0 +1,7 @@
+﻿@using MicroBlog.Core.Models
+@model IEnumerable<Post>
+
+@foreach (var post in Model)
+{
+    @await Html.PartialAsync("_Post", post);
+}

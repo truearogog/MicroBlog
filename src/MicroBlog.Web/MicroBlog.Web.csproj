@@ -1,22 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
 		<UserSecretsId>aspnet-MicroBlog.Web-5c462bc8-193f-40b9-b049-c36745419151</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.4" />
+		<PackageReference Include="Humanizer" Version="2.14.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="$(MicrosoftAspNetCoreVersion)" />
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="$(MicrosoftAspNetCoreVersion)" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.4" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.4" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4" PrivateAssets="all" />
-		<PackageReference Include="NonFactors.Grid.Mvc6" Version="$(NonFactorsGridMvc6Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="$(MicrosoftAspNetCoreVersion)" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="$(MicrosoftAspNetCoreVersion)" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="$(MicrosoftVisualStudioWebCodeGenerationDesignVersion)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(MicrosoftEntityFrameworkCoreVersion)" PrivateAssets="all" />
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="$(SwaggerVersion)" />
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="$(SwaggerVersion)" />
 		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
@@ -27,7 +22,6 @@
 	  <ProjectReference Include="..\MicroBlog.Data.EF.SQLServer\MicroBlog.Data.EF.SQLServer.csproj" />
 	  <ProjectReference Include="..\MicroBlog.Data.EF\MicroBlog.Data.EF.csproj" />
 	  <ProjectReference Include="..\MicroBlog.Identity.SQLServer\MicroBlog.Identity.SQLServer.csproj" />
-	  <ProjectReference Include="..\MicroBlog.Identity\MicroBlog.Identity.csproj" />
 	  <ProjectReference Include="..\MicroBlog.Services\MicroBlog.Services.csproj" />
 	</ItemGroup>
 

@@ -1,6 +1,6 @@
 ﻿#nullable disable
 
-using MicroBlog.Identity.Extensions;
+using MicroBlog.Identity.Managers;
 using MicroBlog.Identity.Models;
 using MicroBlog.Web.Services;
 using Microsoft.AspNetCore.Identity;
@@ -10,9 +10,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MicroBlog.Web.Areas.Identity.Pages.Account.Manage
 {
-    public class IndexModel(UserManager<User> userManager, SignInManager<User> signInManager, ImageService imageService) : PageModel
+    public class IndexModel(UserManager userManager, SignInManager<User> signInManager, ImageService imageService) : PageModel
     {
-        private readonly UserManager<User> _userManager = userManager;
+        private readonly UserManager _userManager = userManager;
         private readonly SignInManager<User> _signInManager = signInManager;
         private readonly ImageService _imageService = imageService;
 
@@ -31,6 +31,9 @@ namespace MicroBlog.Web.Areas.Identity.Pages.Account.Manage
             [Required]
             [Display(Name = "Username")]
             public string Username { get; set; }
+            [Display(Name = "Description")]
+            [MaxLength(1000)]
+            public string Description { get; set; }
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -44,6 +47,7 @@ namespace MicroBlog.Web.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 Username = userName,
+                Description = user.Description,
                 PhoneNumber = phoneNumber
             };
 
@@ -93,6 +97,16 @@ namespace MicroBlog.Web.Areas.Identity.Pages.Account.Manage
             {
                 StatusMessage = "Unexpected error when trying to set profile picture.";
                 return RedirectToPage();
+            }
+
+            if (Input.Description != user.Description)
+            {
+                var setDescriptionResult = await _userManager.SetDescriptionAsync(user, Input.Description);
+                if (!setDescriptionResult.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set description.";
+                    return RedirectToPage();
+                }
             }
 
             var username = await _userManager.GetUserNameAsync(user);

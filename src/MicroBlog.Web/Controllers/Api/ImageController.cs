@@ -5,9 +5,8 @@ namespace MicroBlog.Web.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ImageController(IWebHostEnvironment webHostEnvironment, ImageService imageService) : Controller
+    public class ImageController(ImageService imageService) : Controller
     {
-        private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
         private readonly ImageService _imageService = imageService;
 
         [HttpPost("Upload")]

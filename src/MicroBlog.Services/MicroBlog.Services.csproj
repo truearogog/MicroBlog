@@ -6,10 +6,7 @@
 		
 	<ItemGroup>
       <ProjectReference Include="..\MicroBlog.Core\MicroBlog.Core.csproj" />
+      <ProjectReference Include="..\MicroBlog.Identity\MicroBlog.Identity.csproj" />
     </ItemGroup>
-		
-	<ItemGroup>
-	  <Folder Include="Services\" />
-	</ItemGroup>
 
 </Project>
