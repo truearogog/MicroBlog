@@ -6,11 +6,12 @@ using System.Linq.Expressions;
 
 namespace MicroBlog.Data.EF.Repositories
 {
-    public class PostRepository(IAppDb db, IMapper mapper) : Repository<Post, Entities.Post>(db.Posts, db, mapper), IPostRepository
+    public class PostRepository(IAppDb db, IMapper mapper) : 
+        Repository<Post, Entities.Post>(db.Posts, db, mapper), IPostRepository
     {
         public override IEnumerable<Post> GetAll(Expression<Func<Post, bool>>? filter = null, Func<IQueryable<Post>, IOrderedQueryable<Post>>? orderBy = null)
         {
-            orderBy ??= x => x.OrderBy(y => y.Created);
+            orderBy ??= x => x.OrderByDescending(y => y.Created);
             return base.GetAll(filter, orderBy);
         }
 

@@ -3,7 +3,7 @@
 
 	function init(container, postUrl, userId, pageSize, xsrfToken) {
 
-		var win = $(window);
+		const win = $(window);
 		win.scroll(function () {
 			if ($(document).height() - win.height() == win.scrollTop()) {
 				fetch(container, postUrl, userId, pageSize, xsrfToken);

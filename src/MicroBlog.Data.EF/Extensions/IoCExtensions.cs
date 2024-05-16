@@ -39,6 +39,7 @@ namespace MicroBlog.Data.EF.Extensions
         {
             // Register repositories
             services.Add(new ServiceDescriptor(typeof(IPostRepository), typeof(PostRepository), scope));
+            services.Add(new ServiceDescriptor(typeof(ISubscriptionRepository), typeof(SubscriptionRepository), scope));
 
             // Register services
             services.Add(new ServiceDescriptor(typeof(IAppDb), typeof(T), scope));

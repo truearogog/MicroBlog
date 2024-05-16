@@ -8,7 +8,7 @@ namespace MicroBlog.Data.EF.Profiles
         public PostProfile()
         {
             CreateMap<Post, Entities.Post>();
-            CreateMap<Entities.Post, Post>();
+            CreateMap<Post, Entities.Post>().ReverseMap();
         }
     }
 }

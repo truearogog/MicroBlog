@@ -1,10 +1,12 @@
 ﻿using MicroBlog.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MicroBlog.Web.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ImageController(ImageService imageService) : Controller
     {
         private readonly ImageService _imageService = imageService;

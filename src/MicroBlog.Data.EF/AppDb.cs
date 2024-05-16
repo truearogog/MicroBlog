@@ -6,6 +6,7 @@ namespace MicroBlog.Data.EF
     public abstract class AppDb<TDb>(DbContextOptions<TDb> options) : DbContext(options), IAppDb where TDb : AppDb<TDb>
     {
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -20,6 +21,8 @@ namespace MicroBlog.Data.EF
 
             modelBuilder.Entity<Post>().HasKey(x => x.Id);
             modelBuilder.Entity<Post>().HasIndex(x => x.UserId);
+
+            modelBuilder.Entity<Subscription>().HasKey(x => new { x.FromUserId, x.ToUserId });
         }
     }
 }

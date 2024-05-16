@@ -31,6 +31,7 @@ namespace MicroBlog.Web
 
             builder.Services.AddRazorPages();
             builder.Services.AddControllers();
+            builder.Services.AddMvcCore();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 

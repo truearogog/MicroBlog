@@ -7,21 +7,21 @@
 
 <div class="container d-flex column-gap-2 shadow p-3 mb-3">
     <div class="profile-picture-container flex-shrink-0">
-        <img class="border" src="@Model.CurrentUser.ProfilePictureUrl" />
+        <img class="border" src="@Model.ViewUser.ProfilePictureUrl" />
     </div>
     <div class="flex-grow-1">
         <div class="d-flex align-items-end column-gap-2">
-            <h3 class="m-0">@Model.CurrentUser.UserName</h3>
-            @if (Model.CurrentUser.LastSeen.HasValue && DateTime.UtcNow.Subtract(Model.CurrentUser.LastSeen.Value).TotalMinutes < 1)
+            <h3 class="m-0">@Model.ViewUser.UserName</h3>
+            @if (Model.ViewUser.LastSeen.HasValue && DateTime.UtcNow.Subtract(Model.ViewUser.LastSeen.Value).TotalMinutes < 1)
             {
                 <p class="m-0 text-success fw-bolder">Online</p>
             }
             else
             {
-                <p class="m-0 text-muted fw-bolder">Last seen @Model.CurrentUser.LastSeen.Humanize()</p>
+                <p class="m-0 text-muted fw-bolder">Last seen @Model.ViewUser.LastSeen.Humanize()</p>
             }
         </div>
-        <p>@Model.CurrentUser.Description</p>
+        <p>@Model.ViewUser.Description</p>
     </div>
 </div>
 
@@ -31,7 +31,7 @@
     </button>
 </div>
 
-<partial name="Post/_PostFeed" model="@("/api/Post/FromUser", Model.CurrentUser.Id)" />
+<partial name="Post/_PostFeed" model="@("/api/Post/FromUser", Model.ViewUser.Id)" />
 
 <div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-fullscreen-md-down">
@@ -40,10 +40,15 @@
                 <h5 class="modal-title" id="createPostModalLabel">Create post</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="post">
+            <form asp-page-handler="CreatePost" method="post">
                 <div class="modal-body p-0">
+                    <div class="form-floating m-2">
+                        <input asp-for="CreatePostInput.Title" class="form-control" placeholder="Title" />
+                        <label asp-for="CreatePostInput.Title" class="form-label">Title</label>
+                        <span asp-validation-for="CreatePostInput.Title" class="text-danger"></span>
+                    </div>
                     <div class="form-group">
-                        <textarea class="summernote-input"></textarea>
+                        <textarea asp-for="CreatePostInput.Content" class="summernote-input"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -57,7 +62,7 @@
 
 @section Scripts {
     <script src="~/js/summernote.js" asp-append-version="true"></script>
-    <script src="~/js/post-feed.js" asp-append-version="true" ></script>
+    <script src="~/js/post-feed.js" asp-append-version="true"></script>
     <script type="text/javascript">
         $(function () {
             SummernoteJs.init('.summernote-input', '/api/Image/Upload');
