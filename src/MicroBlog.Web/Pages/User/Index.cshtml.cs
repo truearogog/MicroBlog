@@ -11,26 +11,34 @@ namespace MicroBlog.Web.Pages.User
 {
     [Authorize]
     [BindProperties]
-    public class IndexModel(IPostRepository postRepository, UserManager userManager) : PageModel
+    public class IndexModel(IPostRepository postRepository, ISubscriptionRepository subscriptionRepository, 
+        IBlockRepository blockRepository, UserManager userManager) : PageModel
     {
         private readonly IPostRepository _postRepository = postRepository;
+        private readonly ISubscriptionRepository _subscriptionRepository = subscriptionRepository;
+        private readonly IBlockRepository _blockRepository = blockRepository;
         private readonly UserManager _userManager = userManager;
 
-        public bool SameUser { get; set; }
         public Identity.Models.User ViewUser { get; set; }
+        public bool SameUser { get; set; }
+        public bool Subscribed { get; set; }
+        public bool Blocked { get; set; }
 
         public CreatePostModel CreatePostInput { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string username)
         {
-            var user = await _userManager.FindByNameAsync(username);
-            if (user == null)
+            ViewUser = await _userManager.FindByNameAsync(username);
+            if (ViewUser == null)
             {
                 return NotFound($"Unable to load user with username '{username}'.");
             }
 
-            SameUser = string.Equals(user.UserName, username, StringComparison.InvariantCulture);
-            ViewUser = user;
+            var currentUserId = _userManager.GetUserId(User);
+            var currentUserName = _userManager.GetUserName(User);
+            SameUser = string.Equals(ViewUser.UserName, currentUserName, StringComparison.InvariantCulture);
+            Subscribed = await _subscriptionRepository.Any(x => x.ToUserId == ViewUser.Id && x.FromUserId == currentUserId);
+            Blocked = await _blockRepository.Any(x => x.UserId == currentUserId && x.BlockedUserId == ViewUser.Id);
 
             return Page();
         }

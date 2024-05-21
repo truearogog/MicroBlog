@@ -48,14 +48,14 @@ body {
     box-sizing: content-box;
 }
 
-.profile-picture-container {
+.profile-picture-200-container {
     width: 200px;
     height: 200px;
     overflow: hidden;
     position: relative;
 }
 
-.profile-picture-container img {
+.profile-picture-200-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -65,13 +65,25 @@ body {
     transform: translate(-50%, -50%);
 }
 
-.post-profile-picture-container {
+.profile-picture-50-container {
     width: 50px;
     height: 50px;
     overflow: hidden;
 }
 
-.post-profile-picture-container img {
+.profile-picture-50-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.profile-picture-100-container {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+}
+
+.profile-picture-100-container img {
     width: 100%;
     height: auto;
     display: block;

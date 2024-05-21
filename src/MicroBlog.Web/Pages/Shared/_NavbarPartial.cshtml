@@ -1,0 +1,43 @@
+﻿@using MicroBlog.Identity.Managers
+@using MicroBlog.Identity.Models
+@inject SignInManager<User> SignInManager
+@inject UserManager UserManager
+@{
+    var username = UserManager.GetUserName(User);
+    var currentNavPage = (NavPageType?)ViewData[nameof(NavPageType)];
+
+    async Task RenderNavButton(string link, string name, NavPageType navPage)
+    {
+        <li class="nav-item">
+            <a href="@link" class="btn btn-outline-light border-0 @(currentNavPage == navPage ? "active" : "")">@name</a>
+        </li>
+    }
+}
+
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom mb-3">
+    <div class="container">
+        @if (!SignInManager.IsSignedIn(User))
+        {
+            <a class="navbar-brand" asp-area="" asp-page="/Index">MicroBlog.Web</a>
+        }
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" 
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav flex-grow-1 d-flex justify-content-around">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    await RenderNavButton($"/User/{username}", "Profile", NavPageType.Profile);
+                    await RenderNavButton($"/Feed", "Feed", NavPageType.Feed);
+                    await RenderNavButton($"/Connections", "Connections", NavPageType.Connections);
+                    await RenderNavButton($"/Search", "Search", NavPageType.Search);
+                }
+            </ul>
+            <partial name="_LoginPartial" />
+            <partial name="_ThemePartial" />
+        </div>
+    </div>
+</nav>

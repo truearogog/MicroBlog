@@ -1,9 +1,11 @@
 ﻿using MicroBlog.Core.Constants;
 using MicroBlog.Identity.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Linq.Expressions;
 
 namespace MicroBlog.Identity.Managers
 {
@@ -81,6 +83,27 @@ namespace MicroBlog.Identity.Managers
             user.Description = description ?? string.Empty;
             await UpdateSecurityStampAsync(user).ConfigureAwait(false);
             return await UpdateAsync(user).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<User>> GetUsersAsync(Expression<Func<User, bool>>? filter = null)
+        {
+            ThrowIfDisposed();
+
+            var query = Users;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            return await query.OrderBy(x => x.UserName).ToListAsync();
+        }
+
+        public async Task<bool> ExistsAsync(Expression<Func<User, bool>> predicate)
+        {
+            ThrowIfDisposed();
+            ArgumentNullException.ThrowIfNull(predicate);
+
+            return await Users.AnyAsync(predicate);
         }
     }
 }

@@ -28,8 +28,8 @@ namespace MicroBlog.Services.Services
             var posts = _postRepository.GetAll(x => subscriptions.Contains(x.UserId)).Skip(skip).Take(take).ToList();
             foreach (var post in posts)
             {
-                post.UserProfilePictureUrl = await _userManager.GetProfilePictureUrlAsync(userId);
-                post.UserName = await _userManager.GetUserNameAsync(userId);
+                post.UserProfilePictureUrl = await _userManager.GetProfilePictureUrlAsync(post.UserId);
+                post.UserName = await _userManager.GetUserNameAsync(post.UserId);
             }
             return posts;
         }

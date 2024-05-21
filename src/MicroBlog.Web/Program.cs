@@ -17,14 +17,16 @@ namespace MicroBlog.Web
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddServices();
-            builder.Services.AddAppEF<SQLServerAppDb>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("AppDb")
-                ?? throw new InvalidOperationException("Connection string 'AppDb' not found.")));
+            builder.Services.AddAppEF<SQLServerAppDb>(options => {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("AppDb") ?? throw new InvalidOperationException("Connection string 'AppDb' not found."));
+                options.UseLazyLoadingProxies();
+            });
 
             builder.Services.AddIdentityEF<SQLServerIdentityDb>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityDb")
                 ?? throw new InvalidOperationException("Connection string 'IdentityDb' not found.")));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedEmail = false)
                 .AddEntityFrameworkStores<SQLServerIdentityDb>();
 
             builder.Services.AddScoped<ImageService>();

@@ -40,6 +40,7 @@ namespace MicroBlog.Data.EF.Extensions
             // Register repositories
             services.Add(new ServiceDescriptor(typeof(IPostRepository), typeof(PostRepository), scope));
             services.Add(new ServiceDescriptor(typeof(ISubscriptionRepository), typeof(SubscriptionRepository), scope));
+            services.Add(new ServiceDescriptor(typeof(IBlockRepository), typeof(BlockRepository), scope));
 
             // Register services
             services.Add(new ServiceDescriptor(typeof(IAppDb), typeof(T), scope));
@@ -48,6 +49,8 @@ namespace MicroBlog.Data.EF.Extensions
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(typeof(PostProfile));
+                cfg.AddProfile(typeof(SubscriptionProfile));
+                cfg.AddProfile(typeof(BlockProfile));
             });
             services.Add(new ServiceDescriptor(typeof(IMapper), new Mapper(config)));
 

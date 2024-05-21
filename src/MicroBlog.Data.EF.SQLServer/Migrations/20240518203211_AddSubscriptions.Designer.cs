@@ -4,6 +4,7 @@ using MicroBlog.Data.EF.SQLServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,29 +12,21 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroBlog.Data.EF.SQLServer.Migrations
 {
     [DbContext(typeof(SQLServerAppDb))]
-    partial class SQLServerAppDbModelSnapshot : ModelSnapshot
+    [Migration("20240518203211_AddSubscriptions")]
+    partial class AddSubscriptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("MicroBlog.Data.EF.Entities.Block", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("BlockedUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "BlockedUserId");
-
-                    b.ToTable("Blocks");
-                });
 
             modelBuilder.Entity("MicroBlog.Data.EF.Entities.Post", b =>
                 {

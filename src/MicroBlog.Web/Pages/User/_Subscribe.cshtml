@@ -1,0 +1,15 @@
+﻿@model (bool Subscribed, string UserId)
+
+<div>
+    <form action="/api/User/Subscribe" class="@(Model.Subscribed ? "d-none" : "") subscribe-form" data-userid="@Model.UserId" method="post">
+        <input name="userId" value="@Model.UserId" hidden />
+        <button type="submit" class="btn btn-info">Subscribe</button>
+        @Html.AntiForgeryToken()
+    </form>
+    <form action="/api/User/Unsubscribe" class="@(!Model.Subscribed ? "d-none" : "") unsubscribe-form" data-userid="@Model.UserId" method="post">
+        <input name="userId" value="@Model.UserId" hidden />
+        <button type="submit" class="btn btn-danger">Unsubscribe</button>
+        @Html.AntiForgeryToken()
+    </form>
+</div>
+

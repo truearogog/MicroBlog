@@ -1,0 +1,14 @@
+﻿@page
+@using MicroBlog.Identity.Managers
+@model MicroBlog.Web.Pages.Feed.IndexModel
+@inject UserManager UserManager
+@{
+    var userId = UserManager.GetUserId(User)!;
+    ViewData[nameof(NavPageType)] = NavPageType.Feed;
+}
+
+<partial name="Post/_UserPostFeed" model="@("/api/Post/ForUser", userId)" />
+
+@section Scripts {
+    <script src="~/js/post-feed.js" asp-append-version="true"></script>
+}

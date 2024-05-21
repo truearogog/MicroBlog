@@ -1,6 +1,4 @@
-﻿using MicroBlog.Core.Models;
-using MicroBlog.Core.Repositories;
-using MicroBlog.Core.Services;
+﻿using MicroBlog.Core.Services;
 using MicroBlog.Identity.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,0 +1,15 @@
+﻿@model (bool Blocked, string UserId)
+
+<div>
+    <form action="/api/User/Block" class="@(Model.Blocked ? "d-none" : "") block-form" data-userid="@Model.UserId" method="post">
+        <input name="userId" value="@Model.UserId" hidden />
+        <button type="submit" class="btn btn-danger">Block</button>
+        @Html.AntiForgeryToken()
+    </form>
+    <form action="/api/User/Unblock" class="@(!Model.Blocked ? "d-none" : "") unblock-form" data-userid="@Model.UserId" method="post">
+        <input name="userId" value="@Model.UserId" hidden />
+        <button type="submit" class="btn btn-info">Unblock</button>
+        @Html.AntiForgeryToken()
+    </form>
+</div>
+

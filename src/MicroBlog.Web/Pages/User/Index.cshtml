@@ -2,36 +2,47 @@
 @using Humanizer
 @model MicroBlog.Web.Pages.User.IndexModel
 @{
-
+    if (Model.SameUser)
+    {
+        ViewData[nameof(NavPageType)] = NavPageType.Profile;
+    }
 }
 
-<div class="container d-flex column-gap-2 shadow p-3 mb-3">
-    <div class="profile-picture-container flex-shrink-0">
-        <img class="border" src="@Model.ViewUser.ProfilePictureUrl" />
+<div class="container d-flex gap-2 shadow p-3 mb-3">
+    <div class="profile-picture-200-container flex-shrink-0 rounded">
+        <img src="@Model.ViewUser.ProfilePictureUrl" />
     </div>
     <div class="flex-grow-1">
-        <div class="d-flex align-items-end column-gap-2">
+        <div class="d-flex align-items-end gap-2">
             <h3 class="m-0">@Model.ViewUser.UserName</h3>
             @if (Model.ViewUser.LastSeen.HasValue && DateTime.UtcNow.Subtract(Model.ViewUser.LastSeen.Value).TotalMinutes < 1)
             {
-                <p class="m-0 text-success fw-bolder">Online</p>
+                <small class="m-0 text-success fw-bolder">Online</small>
             }
             else
             {
-                <p class="m-0 text-muted fw-bolder">Last seen @Model.ViewUser.LastSeen.Humanize()</p>
+                <small class="m-0 text-muted fw-bolder">Last seen @Model.ViewUser.LastSeen.Humanize()</small>
             }
         </div>
         <p>@Model.ViewUser.Description</p>
     </div>
 </div>
 
-<div class="d-flex column-gap-2 mb-3">
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPostModal">
-        Create post
-    </button>
+<div class="d-flex gap-2 mb-3">
+    @if (Model.SameUser)
+    {
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPostModal">
+            Create post
+        </button>
+    }
+    else
+    {
+        <partial name="_Subscribe" model="@(Model.Subscribed, Model.ViewUser.Id)" />
+        <partial name="_Block" model="@(Model.Blocked, Model.ViewUser.Id)" />
+    }
 </div>
 
-<partial name="Post/_PostFeed" model="@("/api/Post/FromUser", Model.ViewUser.Id)" />
+<partial name="Post/_UserPostFeed" model="@("/api/Post/FromUser", Model.ViewUser.Id)" />
 
 <div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-fullscreen-md-down">
@@ -63,9 +74,13 @@
 @section Scripts {
     <script src="~/js/summernote.js" asp-append-version="true"></script>
     <script src="~/js/post-feed.js" asp-append-version="true"></script>
+    <script src="~/js/subscribe.js" asp-append-version="true"></script>
+    <script src="~/js/block.js" asp-append-version="true"></script>
     <script type="text/javascript">
         $(function () {
             SummernoteJs.init('.summernote-input', '/api/Image/Upload');
-        })
+            SubscribeJs.init();
+            BlockJs.init();
+        });
     </script>
 }

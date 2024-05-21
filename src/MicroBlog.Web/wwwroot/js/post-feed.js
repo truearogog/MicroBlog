@@ -3,6 +3,8 @@
 
 	function init(container, postUrl, userId, pageSize, xsrfToken) {
 
+		$(container).empty();
+
 		const win = $(window);
 		win.scroll(function () {
 			if ($(document).height() - win.height() == win.scrollTop()) {
@@ -21,13 +23,14 @@
 			headers: {
 				RequestVerificationToken: xsrfToken
 			},
-			data: { userId: userId, skip: _pageNumber * pageSize, take: pageSize },
+			data: { userId, skip: _pageNumber * pageSize, take: pageSize },
 			dataType: 'html',
 			success: function (html) {
-				$(container).append(html);
+				if (html !== "") {
+					$(container).append(html);
+					_pageNumber++;
+				}
 				$('#loading').hide();
-
-				_pageNumber++;
 			}
 		});
 	}

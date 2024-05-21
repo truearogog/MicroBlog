@@ -38,6 +38,19 @@ namespace MicroBlog.Data.EF.Repositories
             return Mapper.Map<T>(await DbSet.FindAsync(keys).ConfigureAwait(false));
         }
 
+
+        public async Task<bool> Any(Expression<Func<T, bool>> predicate)
+        {
+            return await DbSet.ProjectTo<T>(MapperConfig)
+                .AnyAsync(predicate).ConfigureAwait(false);
+        }
+
+        public async Task<bool> All(Expression<Func<T, bool>> predicate)
+        {
+            return await DbSet.ProjectTo<T>(MapperConfig)
+                .AllAsync(predicate).ConfigureAwait(false);
+        }
+
         public async Task Create(T model)
         {
             var entity = Mapper.Map<TEntity>(model);

@@ -4,6 +4,7 @@ using MicroBlog.Data.EF.SQLServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroBlog.Data.EF.SQLServer.Migrations
 {
     [DbContext(typeof(SQLServerAppDb))]
-    partial class SQLServerAppDbModelSnapshot : ModelSnapshot
+    [Migration("20240520194513_AddBlocks")]
+    partial class AddBlocks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,0 +1,96 @@
+﻿@page
+@using Humanizer
+@using MicroBlog.Core.Repositories
+@using MicroBlog.Data.EF.Repositories
+@using MicroBlog.Identity.Managers
+@model MicroBlog.Web.Pages.Connections.IndexModel
+@inject ISubscriptionRepository SubsciptionRepository
+@inject IBlockRepository BlockRepository
+@inject UserManager UserManager
+@{
+    var userId = UserManager.GetUserId(User)!;
+
+    ViewData[nameof(NavPageType)] = NavPageType.Connections;
+
+    async Task RenderTabHeader(string name, string id, bool active)
+    {
+        <li class="nav-item flex-sm-fill text-sm-center" role="presentation">
+            <button class="nav-link w-100 @(active ? "active" : "")" id="pills-@id-tab" data-bs-toggle="pill" data-bs-target="#pills-@id"
+                    type="button" role="tab" aria-controls="pills-@id" aria-selected="@active.ToString()">
+                @name
+            </button>
+        </li>
+    }
+
+    async Task RenderTabContent(IEnumerable<Identity.Models.User> users, string id, bool active)
+    {
+        <div class="tab-pane fade @(active ? "active show" : "")" id="pills-@id" role="tabpanel" aria-labelledby="pills-@id-tab">
+            <div class="row-cols-1 row-cols-md-2 g-4">
+                @foreach (var user in users)
+        {
+            await RenderUser(user);
+        }
+            </div>
+        </div>
+    }
+
+    async Task RenderUser(Identity.Models.User user)
+    {
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body p-2">
+                    <div class="d-flex gap-2">
+                        <div class="profile-picture-100-container flex-shrink-0 rounded img-thumbnail">
+                            <a href="/User/@user.UserName">
+                                <img src="@user.ProfilePictureUrl" />
+                            </a>
+                        </div>
+                        <div class="flex-grow-1 d-flex flex-column justify-content-between">
+                            <div class="d-flex align-items-end gap-2">
+                                <h5 class="m-0"><a class="text-muted text-decoration-none" href="/User/@user.UserName">@user.UserName</a></h5>
+                                @if (user.LastSeen.HasValue && DateTime.UtcNow.Subtract(user.LastSeen.Value).TotalMinutes < 1)
+                                {
+                                    <small class="m-0 text-success fw-bolder">Online</small>
+                                }
+                                else
+                                {
+                                    <small class="m-0 text-muted fw-bolder">Last seen @user.LastSeen.Humanize()</small>
+                                }
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <partial name="User/_Subscribe" model="@(await SubsciptionRepository.Any(x => x.FromUserId == userId && x.ToUserId == user.Id), user.Id)" />
+                                <partial name="User/_Block" model="@(await BlockRepository.Any(x => x.UserId == userId && x.BlockedUserId == user.Id), user.Id)" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<ul class="nav nav-pills w-50 mx-auto mb-3 flex-column flex-sm-row" id="pills-tab" role="tablist">
+    @{
+        await RenderTabHeader("Subscribed By", "subscribedby", true);
+        await RenderTabHeader("Subscribed To", "subscribedto", false);
+    }
+</ul>
+<div class="tab-content">
+    @{
+        await RenderTabContent(Model.SubscribedByUsers, "subscribedby", true);
+        await RenderTabContent(Model.SubscribedToUsers, "subscribedto", false);
+    }
+</div>
+
+@section Scripts {
+    <script src="~/js/block.js" asp-append-version="true"></script>
+    <script src="~/js/subscribe.js" asp-append-version="true"></script>
+    <script src="~/js/block.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(function () {
+            SubscribeJs.init();
+            BlockJs.init();
+        });
+    </script>
+}

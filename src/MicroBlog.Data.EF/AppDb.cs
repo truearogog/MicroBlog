@@ -7,13 +7,7 @@ namespace MicroBlog.Data.EF
     {
         public DbSet<Post> Posts { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-
-            optionsBuilder.UseLazyLoadingProxies();
-        }
+        public DbSet<Block> Blocks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,6 +17,8 @@ namespace MicroBlog.Data.EF
             modelBuilder.Entity<Post>().HasIndex(x => x.UserId);
 
             modelBuilder.Entity<Subscription>().HasKey(x => new { x.FromUserId, x.ToUserId });
+
+            modelBuilder.Entity<Block>().HasKey(x => new { x.UserId, x.BlockedUserId });
         }
     }
 }

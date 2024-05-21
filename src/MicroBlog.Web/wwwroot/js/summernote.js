@@ -8,7 +8,7 @@
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['table', ['table']],
                 ['insert', ['link', 'picture', 'video']],
-                ['view', ['fullscreen', 'codeview', 'help']],
+                ['view', ['codeview']],
             ],
             callbacks: {
                 onImageUpload: function (files) {

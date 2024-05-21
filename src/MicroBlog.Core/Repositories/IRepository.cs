@@ -6,6 +6,8 @@ namespace MicroBlog.Core.Repositories
     {
         IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null);
         Task<T> Find(params object[] keys);
+        Task<bool> Any(Expression<Func<T, bool>> predicate);
+        Task<bool> All(Expression<Func<T, bool>> predicate);
         Task Create(T model);
         Task CreateRange(IEnumerable<T> models);
         Task Update(T model);

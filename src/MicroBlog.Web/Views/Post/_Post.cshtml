@@ -3,20 +3,18 @@
 
 <div class="card mb-3">
     <div class="card-body">
-        <div class="d-flex mb-2">
-            <div class="post-profile-picture-container me-2">
-                <img src="@Model.UserProfilePictureUrl" />
+        <div class="d-flex mb-1">
+            <div class="profile-picture-50-container rounded img-thumbnail me-2">
+                <a href="/User/@Model.UserName">
+                    <img src="@Model.UserProfilePictureUrl" />
+                </a>
             </div>
             <div>
-                <h6 class="mb-1">@Model.UserName</h6>
+                <h6 class="mb-1 fs-5"><a class="text-muted text-decoration-none" href="/User/@Model.UserName">@Model.UserName</a></h6>
                 <p class="text-muted">@Model.Created</p>
             </div>
         </div>
-
-        <h4 class="mb-2">@Model.Title</h4>
-
+        <h3 class="mb-2">@Model.Title</h3>
         @Html.Raw(Model.Content)
-
-        <a href="#" class="d-none"></a>
     </div>
 </div>
