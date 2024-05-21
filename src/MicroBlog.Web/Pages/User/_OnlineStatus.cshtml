@@ -1,0 +1,11 @@
+﻿@using Humanizer
+@model DateTime
+
+@if (DateTime.UtcNow.Subtract(Model).TotalMinutes < 2)
+{
+    <small class="m-0 text-success fw-bolder">Online</small>
+}
+else
+{
+    <small class="m-0 text-muted fw-bolder">Last seen @Model.Humanize()</small>
+}

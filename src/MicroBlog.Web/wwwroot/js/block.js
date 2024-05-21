@@ -1,10 +1,10 @@
 ﻿BlockJs = (function () {
     function init() {
-        $('.block-form').on('submit', e => handleSubmit(e, '.block-form', '.unblock-form'));
-        $('.unblock-form').on('submit', e => handleSubmit(e, '.unblock-form', '.block-form'));
+        $('.block-form').on('submit', e => handleSubmit(e, '.block-form', '.unblock-form', false));
+        $('.unblock-form').on('submit', e => handleSubmit(e, '.unblock-form', '.block-form', true));
     }
 
-    function handleSubmit(e, currentFormSelector, targetFormSelector) {
+    function handleSubmit(e, currentFormSelector, targetFormSelector, showSubsribeForms) {
         e.preventDefault();
         const $form = $(e.target);
         const userId = $form.data('userid');
@@ -16,7 +16,18 @@
 
                 $(targetFormSelector + `[data-userId=${userId}]`).removeClass('d-none');
                 $(currentFormSelector + `[data-userId=${userId}]`).addClass('d-none');
+                toggleSubscribeForms(showSubsribeForms, userId);
             });
+    }
+
+    function toggleSubscribeForms(show, userId) {
+        const forms = $(`.subscribe-forms[data-userId=${userId}]`);
+
+        if (show) forms.removeClass('d-none');
+        else forms.addClass('d-none');
+
+        forms.find('.subscribe-form').removeClass('d-none');
+        forms.find('.unsubscribe-form').addClass('d-none');
     }
 
     return {

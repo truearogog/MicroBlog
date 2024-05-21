@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="$(MicrosoftAspNetCoreVersion)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MicroBlog.Core\MicroBlog.Core.csproj" />
+    <ProjectReference Include="..\MicroBlog.Identity\MicroBlog.Identity.csproj" />
+  </ItemGroup>
+</Project>

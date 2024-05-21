@@ -16,6 +16,7 @@ namespace MicroBlog.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddWorkers();
             builder.Services.AddServices();
             builder.Services.AddAppEF<SQLServerAppDb>(options => {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("AppDb") ?? throw new InvalidOperationException("Connection string 'AppDb' not found."));

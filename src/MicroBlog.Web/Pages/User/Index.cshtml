@@ -15,13 +15,9 @@
     <div class="flex-grow-1">
         <div class="d-flex align-items-end gap-2">
             <h3 class="m-0">@Model.ViewUser.UserName</h3>
-            @if (Model.ViewUser.LastSeen.HasValue && DateTime.UtcNow.Subtract(Model.ViewUser.LastSeen.Value).TotalMinutes < 1)
+            @if (Model.ViewUser.LastSeen.HasValue)
             {
-                <small class="m-0 text-success fw-bolder">Online</small>
-            }
-            else
-            {
-                <small class="m-0 text-muted fw-bolder">Last seen @Model.ViewUser.LastSeen.Humanize()</small>
+                <partial name="_OnlineStatus" model="@Model.ViewUser.LastSeen.Value" />
             }
         </div>
         <p>@Model.ViewUser.Description</p>
@@ -37,7 +33,7 @@
     }
     else
     {
-        <partial name="_Subscribe" model="@(Model.Subscribed, Model.ViewUser.Id)" />
+        <partial name="_Subscribe" model="@(Model.Subscribed, Model.Blocked, Model.ViewUser.Id)" />
         <partial name="_Block" model="@(Model.Blocked, Model.ViewUser.Id)" />
     }
 </div>

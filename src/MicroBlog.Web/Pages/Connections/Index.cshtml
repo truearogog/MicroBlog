@@ -36,6 +36,9 @@
 
     async Task RenderUser(Identity.Models.User user)
     {
+        var subscribed = await SubsciptionRepository.Any(x => x.FromUserId == userId && x.ToUserId == user.Id);
+        var blocked = await BlockRepository.Any(x => x.UserId == userId && x.BlockedUserId == user.Id);
+
         <div class="col">
             <div class="card h-100">
                 <div class="card-body p-2">
@@ -46,21 +49,17 @@
                             </a>
                         </div>
                         <div class="flex-grow-1 d-flex flex-column justify-content-between">
-                            <div class="d-flex align-items-end gap-2">
-                                <h5 class="m-0"><a class="text-muted text-decoration-none" href="/User/@user.UserName">@user.UserName</a></h5>
-                                @if (user.LastSeen.HasValue && DateTime.UtcNow.Subtract(user.LastSeen.Value).TotalMinutes < 1)
+                            <div class="d-flex flex-column">
+                                <h4 class="m-0"><a class="text-muted text-decoration-none" href="/User/@user.UserName">@user.UserName</a></h4>
+                                @if (user.LastSeen.HasValue)
                                 {
-                                    <small class="m-0 text-success fw-bolder">Online</small>
-                                }
-                                else
-                                {
-                                    <small class="m-0 text-muted fw-bolder">Last seen @user.LastSeen.Humanize()</small>
+                                    <partial name="User/_OnlineStatus" model="@user.LastSeen.Value" />
                                 }
                             </div>
 
-                            <div class="d-flex justify-content-between">
-                                <partial name="User/_Subscribe" model="@(await SubsciptionRepository.Any(x => x.FromUserId == userId && x.ToUserId == user.Id), user.Id)" />
-                                <partial name="User/_Block" model="@(await BlockRepository.Any(x => x.UserId == userId && x.BlockedUserId == user.Id), user.Id)" />
+                            <div class="d-flex gap-2">
+                                <partial name="User/_Subscribe" model="@(subscribed, blocked, user.Id)" />
+                                <partial name="User/_Block" model="@(blocked, user.Id)" />
                             </div>
                         </div>
                     </div>

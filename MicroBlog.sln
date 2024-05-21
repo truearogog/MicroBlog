@@ -28,6 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroBlog.Identity", "src\M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroBlog.Identity.SQLServer", "src\MicroBlog.Identity.SQLServer\MicroBlog.Identity.SQLServer.csproj", "{C3069790-1635-4F89-9F2E-CC920F731C84}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroBlog.Workers", "src\MicroBlog.Workers\MicroBlog.Workers.csproj", "{0720EEF3-353D-4C18-B01B-5D6DF50AE5F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{C3069790-1635-4F89-9F2E-CC920F731C84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3069790-1635-4F89-9F2E-CC920F731C84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3069790-1635-4F89-9F2E-CC920F731C84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0720EEF3-353D-4C18-B01B-5D6DF50AE5F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0720EEF3-353D-4C18-B01B-5D6DF50AE5F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0720EEF3-353D-4C18-B01B-5D6DF50AE5F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0720EEF3-353D-4C18-B01B-5D6DF50AE5F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +85,7 @@ Global
 		{4ABB7255-A84B-42D3-9143-5A7E113DEA73} = {1F3AEDE5-59CE-465B-A35E-0EF30256FAA1}
 		{DDAB202A-0510-4AEE-99DB-649876E41A73} = {5D7B05B5-D8A4-4267-8D5D-DA0A27D896CA}
 		{C3069790-1635-4F89-9F2E-CC920F731C84} = {5D7B05B5-D8A4-4267-8D5D-DA0A27D896CA}
+		{0720EEF3-353D-4C18-B01B-5D6DF50AE5F8} = {5D7B05B5-D8A4-4267-8D5D-DA0A27D896CA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9EE6E75-48F1-4DDD-B125-6E3FEE3D8CD6}

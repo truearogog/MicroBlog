@@ -54,6 +54,10 @@ namespace MicroBlog.Web.Controllers.Api
 
             var currentUserId = _userManager.GetUserId(User)!;
             await _blockRepository.Create(new Core.Models.Block { UserId = currentUserId, BlockedUserId = userId! });
+            if (await _subscriptionRepository.Any(x => x.FromUserId == currentUserId && x.ToUserId == userId))
+            {
+                await _subscriptionRepository.Delete(new Core.Models.Subscription { FromUserId = currentUserId, ToUserId = userId! });
+            }
 
             return Ok();
         }

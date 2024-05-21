@@ -1,6 +1,6 @@
-﻿@model (bool Subscribed, string UserId)
+﻿@model (bool Subscribed, bool Blocked, string UserId)
 
-<div>
+<div class="@(Model.Blocked ? "d-none" : "") subscribe-forms" data-userid="@Model.UserId">
     <form action="/api/User/Subscribe" class="@(Model.Subscribed ? "d-none" : "") subscribe-form" data-userid="@Model.UserId" method="post">
         <input name="userId" value="@Model.UserId" hidden />
         <button type="submit" class="btn btn-info">Subscribe</button>

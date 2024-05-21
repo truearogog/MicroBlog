@@ -1,4 +1,5 @@
-﻿using MicroBlog.Identity.Managers;
+﻿using MicroBlog.Core.Services;
+using MicroBlog.Identity.Extensions;
 
 namespace MicroBlog.Web.Middleware
 {
@@ -12,12 +13,12 @@ namespace MicroBlog.Web.Middleware
             if (context.User.Identity?.IsAuthenticated == true)
             {
                 using var serviceScope = _serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
-                var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager>();
-                var user = await userManager.GetUserAsync(context.User);
+                var userLoggingService = serviceScope.ServiceProvider.GetRequiredService<IUserLoggingService>();
 
-                if (user != null)
+                var userId = context.User.GetUserId();
+                if (!string.IsNullOrEmpty(userId))
                 {
-                    await userManager.SetLastSeenAsync(user, DateTime.UtcNow);
+                    userLoggingService.AddOrUpdateLogin(userId, DateTime.UtcNow);
                 }
             }
 

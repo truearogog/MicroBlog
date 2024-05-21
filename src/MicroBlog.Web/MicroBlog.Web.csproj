@@ -23,6 +23,7 @@
 	  <ProjectReference Include="..\MicroBlog.Data.EF\MicroBlog.Data.EF.csproj" />
 	  <ProjectReference Include="..\MicroBlog.Identity.SQLServer\MicroBlog.Identity.SQLServer.csproj" />
 	  <ProjectReference Include="..\MicroBlog.Services\MicroBlog.Services.csproj" />
+	  <ProjectReference Include="..\MicroBlog.Workers\MicroBlog.Workers.csproj" />
 	</ItemGroup>
 
 </Project>
