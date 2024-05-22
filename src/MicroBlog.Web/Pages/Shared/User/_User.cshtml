@@ -6,6 +6,7 @@
 @model User
 @{
     var userId = User.GetUserId();
+    var blocked = await BlockRepository.Any(x => x.UserId == userId && x.BlockedUserId == Model.Id);
     var blockedFromUser = await BlockRepository.Any(x => x.UserId == Model.Id && x.BlockedUserId == userId);
 }
 
@@ -24,22 +25,20 @@
                     {
                         <partial name="_OnlineStatus.cshtml" model="@Model.LastSeen.Value" />
                     }
+                    @if (blockedFromUser)
+                    {
+                        <p class="fs-6 text-danger m-0">The user has blocked you.</p>
+                    }
                 </div>
 
-                @if (blockedFromUser)
-                {
-                    <p class="fs-6 text-danger m-0">The user has blocked you.</p>
-                }
-                else
-                {
-                    var subscribed = await SubsciptionRepository.Any(x => x.FromUserId == userId && x.ToUserId == Model.Id);
-                    var blocked = await BlockRepository.Any(x => x.UserId == userId && x.BlockedUserId == Model.Id);
-
-                    <div class="d-flex gap-2">
+                <div class="d-flex gap-2">
+                    @if (!blockedFromUser)
+                    {
+                        var subscribed = await SubsciptionRepository.Any(x => x.FromUserId == userId && x.ToUserId == Model.Id);
                         <partial name="_Subscribe.cshtml" model="@(subscribed, blocked, Model.Id)" />
-                        <partial name="_Block.cshtml" model="@(blocked, Model.Id)" />
-                    </div>
-                }
+                    }
+                    <partial name="_Block.cshtml" model="@(blocked, Model.Id)" />
+                </div>
             </div>
         </div>
     </div>

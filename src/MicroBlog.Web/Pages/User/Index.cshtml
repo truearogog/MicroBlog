@@ -20,6 +20,10 @@
                 <partial name="Shared/User/_OnlineStatus" model="@Model.ViewUser.LastSeen.Value" />
             }
         </div>
+        @if (Model.BlockedFromUser)
+        {
+            <h5 class="text-danger">The user has blocked you.</h5>
+        }
         <p>@Model.ViewUser.Description</p>
     </div>
 </div>
@@ -33,15 +37,11 @@
     }
     else
     {
-        @if (Model.BlockedFromUser)
-        {
-            <h5 class="text-danger">The user has blocked you.</h5>
-        }
-        else
+        @if (!Model.BlockedFromUser)
         {
             <partial name="Shared/User/_Subscribe" model="@(Model.Subscribed, Model.Blocked, Model.ViewUser.Id)" />
-            <partial name="Shared/User/_Block" model="@(Model.Blocked, Model.ViewUser.Id)" />
         }
+        <partial name="Shared/User/_Block" model="@(Model.Blocked, Model.ViewUser.Id)" />
     }
 </div>
 

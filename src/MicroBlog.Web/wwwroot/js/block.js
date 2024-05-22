@@ -22,12 +22,12 @@
 
     function toggleSubscribeForms(show, userId) {
         const forms = $(`.subscribe-forms[data-userId=${userId}]`);
-
-        if (show) forms.removeClass('d-none');
-        else forms.addClass('d-none');
-
-        forms.find('.subscribe-form').removeClass('d-none');
-        forms.find('.unsubscribe-form').addClass('d-none');
+        if (forms) {
+            if (show) forms.removeClass('d-none');
+            else forms.addClass('d-none');
+            forms.find('.subscribe-form').removeClass('d-none');
+            forms.find('.unsubscribe-form').addClass('d-none');
+        }
     }
 
     return {

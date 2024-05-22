@@ -4,12 +4,12 @@
 @{
     ViewData[nameof(NavPageType)] = NavPageType.Connections;
 
-    async Task RenderTabHeader(string name, string id, bool active)
+    async Task RenderTabHeader(string name, int count, string id, bool active)
     {
         <li class="nav-item flex-sm-fill text-sm-center" role="presentation">
             <button class="nav-link w-100 @(active ? "active" : "")" id="pills-@id-tab" data-bs-toggle="pill" data-bs-target="#pills-@id"
                     type="button" role="tab" aria-controls="pills-@id" aria-selected="@active.ToString()">
-                @name
+                @name <span class="fw-bolder">(@count)</span>
             </button>
         </li>
     }
@@ -26,8 +26,8 @@
 
 <ul class="nav nav-pills w-50 mx-auto mb-3 flex-column flex-sm-row" id="pills-tab" role="tablist">
     @{
-        await RenderTabHeader("Subscribed By", "subscribedby", true);
-        await RenderTabHeader("Subscribed To", "subscribedto", false);
+        await RenderTabHeader("Subscribed By", Model.SubscribedByUsers.Count(), "subscribedby", true);
+        await RenderTabHeader("Subscribed To", Model.SubscribedToUsers.Count(), "subscribedto", false);
     }
 </ul>
 <div class="tab-content">
