@@ -1,5 +1,5 @@
 ﻿@using MicroBlog.Identity.Models
-@inject SignInManager<User> SignInManager
+@inject SignInManager<Identity.Models.User> SignInManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))

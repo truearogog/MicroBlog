@@ -28,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroBlog.Identity", "src\M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroBlog.Identity.SQLServer", "src\MicroBlog.Identity.SQLServer\MicroBlog.Identity.SQLServer.csproj", "{C3069790-1635-4F89-9F2E-CC920F731C84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroBlog.Workers", "src\MicroBlog.Workers\MicroBlog.Workers.csproj", "{0720EEF3-353D-4C18-B01B-5D6DF50AE5F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroBlog.Workers", "src\MicroBlog.Workers\MicroBlog.Workers.csproj", "{0720EEF3-353D-4C18-B01B-5D6DF50AE5F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

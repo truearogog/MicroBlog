@@ -1,0 +1,46 @@
+﻿@using MicroBlog.Core.Repositories
+@using MicroBlog.Identity.Extensions
+@using MicroBlog.Identity.Models
+@inject ISubscriptionRepository SubsciptionRepository
+@inject IBlockRepository BlockRepository
+@model User
+@{
+    var userId = User.GetUserId();
+    var blockedFromUser = await BlockRepository.Any(x => x.UserId == Model.Id && x.BlockedUserId == userId);
+}
+
+<div class="card">
+    <div class="card-body p-2">
+        <div class="d-flex gap-2">
+            <div class="profile-picture-100-container flex-shrink-0 rounded img-thumbnail">
+                <a href="/User/@Model.UserName">
+                    <img src="@Model.ProfilePictureUrl" />
+                </a>
+            </div>
+            <div class="flex-grow-1 d-flex flex-column justify-content-between">
+                <div class="d-flex flex-column">
+                    <h4 class="m-0"><a class="text-muted text-decoration-none" href="/User/@Model.UserName">@Model.UserName</a></h4>
+                    @if (Model.LastSeen.HasValue)
+                    {
+                        <partial name="_OnlineStatus.cshtml" model="@Model.LastSeen.Value" />
+                    }
+                </div>
+
+                @if (blockedFromUser)
+                {
+                    <p class="fs-6 text-danger m-0">The user has blocked you.</p>
+                }
+                else
+                {
+                    var subscribed = await SubsciptionRepository.Any(x => x.FromUserId == userId && x.ToUserId == Model.Id);
+                    var blocked = await BlockRepository.Any(x => x.UserId == userId && x.BlockedUserId == Model.Id);
+
+                    <div class="d-flex gap-2">
+                        <partial name="_Subscribe.cshtml" model="@(subscribed, blocked, Model.Id)" />
+                        <partial name="_Block.cshtml" model="@(blocked, Model.Id)" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,5 @@
 ﻿using MicroBlog.Core.Repositories;
+using MicroBlog.Identity.Extensions;
 using MicroBlog.Identity.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,14 +55,19 @@ namespace MicroBlog.Web.Controllers.Api
 
             var currentUserId = _userManager.GetUserId(User)!;
             await _blockRepository.Create(new Core.Models.Block { UserId = currentUserId, BlockedUserId = userId! });
+
             if (await _subscriptionRepository.Any(x => x.FromUserId == currentUserId && x.ToUserId == userId))
             {
                 await _subscriptionRepository.Delete(new Core.Models.Subscription { FromUserId = currentUserId, ToUserId = userId! });
             }
 
+            if (await _subscriptionRepository.Any(x => x.FromUserId == userId && x.ToUserId == currentUserId))
+            {
+                await _subscriptionRepository.Delete(new Core.Models.Subscription { FromUserId = userId!, ToUserId = currentUserId });
+            }
+
             return Ok();
         }
-
 
         [HttpPost("Unblock")]
         public async Task<IActionResult> Unblock([FromForm] string userId)
@@ -75,6 +81,14 @@ namespace MicroBlog.Web.Controllers.Api
             await _blockRepository.Delete(new Core.Models.Block { UserId = currentUserId, BlockedUserId = userId! });
 
             return Ok();
+        }
+
+        [HttpGet("Search")]
+        public async Task<IActionResult> Search(string search, int skip, int take)
+        {
+            var userId = User.GetUserId();
+            var users = await _userManager.Search(x => x.Id != userId && x.UserName!.StartsWith(search), skip, take);
+            return PartialView("~/Pages/Shared/User/_UserList.cshtml", users);
         }
     }
 }

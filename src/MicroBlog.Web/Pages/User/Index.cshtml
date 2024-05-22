@@ -17,7 +17,7 @@
             <h3 class="m-0">@Model.ViewUser.UserName</h3>
             @if (Model.ViewUser.LastSeen.HasValue)
             {
-                <partial name="_OnlineStatus" model="@Model.ViewUser.LastSeen.Value" />
+                <partial name="Shared/User/_OnlineStatus" model="@Model.ViewUser.LastSeen.Value" />
             }
         </div>
         <p>@Model.ViewUser.Description</p>
@@ -33,8 +33,15 @@
     }
     else
     {
-        <partial name="_Subscribe" model="@(Model.Subscribed, Model.Blocked, Model.ViewUser.Id)" />
-        <partial name="_Block" model="@(Model.Blocked, Model.ViewUser.Id)" />
+        @if (Model.BlockedFromUser)
+        {
+            <h5 class="text-danger">The user has blocked you.</h5>
+        }
+        else
+        {
+            <partial name="Shared/User/_Subscribe" model="@(Model.Subscribed, Model.Blocked, Model.ViewUser.Id)" />
+            <partial name="Shared/User/_Block" model="@(Model.Blocked, Model.ViewUser.Id)" />
+        }
     }
 </div>
 
@@ -69,7 +76,6 @@
 
 @section Scripts {
     <script src="~/js/summernote.js" asp-append-version="true"></script>
-    <script src="~/js/post-feed.js" asp-append-version="true"></script>
     <script src="~/js/subscribe.js" asp-append-version="true"></script>
     <script src="~/js/block.js" asp-append-version="true"></script>
     <script type="text/javascript">

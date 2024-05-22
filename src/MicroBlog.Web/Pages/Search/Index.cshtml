@@ -1,0 +1,29 @@
+﻿@page
+@model MicroBlog.Web.Pages.Search.IndexModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@{
+    var requestToken = Antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
+}
+
+<div class="mb-3">
+    <input id="search" class="form-control form-control-lg" placeholder="Who are you looking for?" />
+</div>
+
+<div id="user-list" class="d-flex flex-column gap-3"></div>
+
+<div id="loading" class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+</div>
+
+@section Scripts {
+    <script src="~/js/block.js" asp-append-version="true"></script>
+    <script src="~/js/subscribe.js" asp-append-version="true"></script>
+    <script src="~/js/user-search.js" asp-append-version="true"></script>
+    <script>
+        $(function () {
+            BlockJs.init();
+            SubscribeJs.init();
+            UserSearchJs.init('#user-list', '/api/User/Search', 20, '@requestToken');
+        })
+    </script>
+}

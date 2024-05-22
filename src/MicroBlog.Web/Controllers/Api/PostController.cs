@@ -1,5 +1,4 @@
 ﻿using MicroBlog.Core.Services;
-using MicroBlog.Identity.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,20 +15,14 @@ namespace MicroBlog.Web.Controllers.Api
         public async Task<IActionResult> FromUser(string userId, int skip, int take)
         {
             var posts = await _postService.GetPostsFromUserAsync(userId, skip, take);
-            return PartialView("_PostList", posts);
+            return PartialView("~/Pages/Shared/Post/_PostList.cshtml", posts);
         }
 
         [HttpGet("ForUser")]
         public async Task<IActionResult> ForUser(string userId, int skip, int take)
         {
             var posts = await _postService.GetPostsForUserAsync(userId, skip, take);
-            return PartialView("_PostList", posts);
-        }
-
-        [HttpGet("ForTags")]
-        public async Task<IActionResult> ForTags(string userId, int skip, int take)
-        {
-            throw new NotImplementedException();
+            return PartialView("~/Pages/Shared/Post/_PostList.cshtml", posts);
         }
     }
 }

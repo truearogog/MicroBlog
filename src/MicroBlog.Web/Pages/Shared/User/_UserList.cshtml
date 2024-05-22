@@ -1,0 +1,7 @@
+﻿@using MicroBlog.Identity.Models
+@model IEnumerable<User>
+
+@foreach (var user in Model)
+{
+    <partial name="_User.cshtml" model="@user" />
+}

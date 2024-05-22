@@ -1,0 +1,18 @@
+﻿@model (string Url, string UserId)
+
+<div id="post-feed"></div>
+
+<div id="loading" class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+</div>
+
+@Html.PartialSectionScripts(
+    @<text>
+        <script src="~/js/post-feed.js" asp-append-version="true"></script>
+        <script>
+            $(function () {
+                PostFeedJs.init('#post-feed', '@Model.Url', '@Model.UserId', 10, '@Html.AntiForgeryToken()');
+            })
+        </script>
+    </text>
+)

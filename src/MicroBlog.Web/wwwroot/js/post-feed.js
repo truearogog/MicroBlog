@@ -6,7 +6,7 @@
 		$(container).empty();
 
 		const win = $(window);
-		win.scroll(function () {
+		win.on('scroll', function () {
 			if ($(document).height() - win.height() == win.scrollTop()) {
 				fetch(container, postUrl, userId, pageSize, xsrfToken);
 			}
@@ -20,9 +20,7 @@
 
 		$.ajax({
 			url: postUrl,
-			headers: {
-				RequestVerificationToken: xsrfToken
-			},
+			headers: { RequestVerificationToken: xsrfToken },
 			data: { userId, skip: _pageNumber * pageSize, take: pageSize },
 			dataType: 'html',
 			success: function (html) {

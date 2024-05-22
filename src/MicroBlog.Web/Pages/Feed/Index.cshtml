@@ -7,8 +7,4 @@
     ViewData[nameof(NavPageType)] = NavPageType.Feed;
 }
 
-<partial name="Post/_UserPostFeed" model="@("/api/Post/ForUser", userId)" />
-
-@section Scripts {
-    <script src="~/js/post-feed.js" asp-append-version="true"></script>
-}
+<partial name="Shared/Post/_UserPostFeed" model="@("/api/Post/ForUser", userId)" />

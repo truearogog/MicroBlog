@@ -105,5 +105,13 @@ namespace MicroBlog.Identity.Managers
 
             return await Users.AnyAsync(predicate);
         }
+
+        public async Task<IEnumerable<User>> Search(Expression<Func<User, bool>> predicate, int skip, int take)
+        {
+            ThrowIfDisposed();
+            ArgumentNullException.ThrowIfNull(predicate);
+
+            return await Users.Where(predicate).Skip(skip).Take(take).ToListAsync();
+        }
     }
 }

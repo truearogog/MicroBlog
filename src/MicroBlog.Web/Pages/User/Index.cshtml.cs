@@ -23,6 +23,7 @@ namespace MicroBlog.Web.Pages.User
         public bool SameUser { get; set; }
         public bool Subscribed { get; set; }
         public bool Blocked { get; set; }
+        public bool BlockedFromUser { get; set; }
 
         public CreatePostModel CreatePostInput { get; set; }
 
@@ -39,6 +40,7 @@ namespace MicroBlog.Web.Pages.User
             SameUser = string.Equals(ViewUser.UserName, currentUserName, StringComparison.InvariantCulture);
             Subscribed = await _subscriptionRepository.Any(x => x.ToUserId == ViewUser.Id && x.FromUserId == currentUserId);
             Blocked = await _blockRepository.Any(x => x.UserId == currentUserId && x.BlockedUserId == ViewUser.Id);
+            BlockedFromUser = await _blockRepository.Any(x => x.UserId == ViewUser.Id && x.BlockedUserId == currentUserId);
 
             return Page();
         }

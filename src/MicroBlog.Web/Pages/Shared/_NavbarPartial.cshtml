@@ -1,6 +1,6 @@
 ﻿@using MicroBlog.Identity.Managers
 @using MicroBlog.Identity.Models
-@inject SignInManager<User> SignInManager
+@inject SignInManager<Identity.Models.User> SignInManager
 @inject UserManager UserManager
 @{
     var username = UserManager.GetUserName(User);

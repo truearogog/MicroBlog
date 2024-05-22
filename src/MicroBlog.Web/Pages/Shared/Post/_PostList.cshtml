@@ -3,5 +3,5 @@
 
 @foreach (var post in Model)
 {
-    @await Html.PartialAsync("_Post", post);
+    <partial name="_Post.cshtml" model="@post" />
 }

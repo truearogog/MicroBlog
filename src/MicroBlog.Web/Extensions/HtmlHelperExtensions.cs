@@ -26,7 +26,7 @@ namespace MicroBlog.Web.Extensions
                 var template = htmlHelper.ViewContext.HttpContext.Items[key] as Func<object, HelperResult>;
                 if (template != null)
                 {
-                    var writer = new System.IO.StringWriter();
+                    var writer = new StringWriter();
                     template(null!).WriteTo(writer, HtmlEncoder.Default);
                     contentBuilder.AppendHtml(writer.ToString());
                 }
