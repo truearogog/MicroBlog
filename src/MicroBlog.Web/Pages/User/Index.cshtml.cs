@@ -1,5 +1,6 @@
 #nullable disable
 
+using Ganss.Xss;
 using MicroBlog.Core.Repositories;
 using MicroBlog.Identity.Managers;
 using MicroBlog.Web.Models;
@@ -55,10 +56,15 @@ namespace MicroBlog.Web.Pages.User
             try
             {
                 var user = await _userManager.GetUserAsync(User);
+
+                var sanitizer = new HtmlSanitizer();
+                sanitizer.AllowedAttributes.Add("class");
+                var sanitizedContent = sanitizer.Sanitize(CreatePostInput.Content);
+
                 var post = new Core.Models.Post
                 {
                     Title = CreatePostInput.Title,
-                    Content = CreatePostInput.Content,
+                    Content = sanitizedContent,
                     UserId = user!.Id
                 };
 
