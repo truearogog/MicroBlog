@@ -11,8 +11,11 @@ namespace MicroBlog.Data.EF.SQLServer
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Post>().Property(x => x.Created).HasDefaultValueSql("GETUTCDATE()");
-            modelBuilder.Entity<Post>().Property(x => x.Updated).HasDefaultValueSql("GETUTCDATE()");
+            modelBuilder.Entity<Post>().Property(x => x.Created).HasDefaultValueSql("GETUTCDATE()").ValueGeneratedOnAdd();
+            modelBuilder.Entity<Post>().Property(x => x.Updated).HasDefaultValueSql("GETUTCDATE()").ValueGeneratedOnAddOrUpdate();
+
+            modelBuilder.Entity<Comment>().Property(x => x.Created).HasDefaultValueSql("GETUTCDATE()").ValueGeneratedOnAdd();
+            modelBuilder.Entity<Comment>().Property(x => x.Updated).HasDefaultValueSql("GETUTCDATE()").ValueGeneratedOnAddOrUpdate();
         }
     }
 }

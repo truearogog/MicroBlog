@@ -1,7 +1,73 @@
-﻿@using MicroBlog.Core.Models
+﻿@using MicroBlog.Core.Constants
+@using MicroBlog.Core.Models
+@using MicroBlog.Core.Repositories
+@using MicroBlog.Identity.Extensions
 @model Post
+@inject IReactionRepository ReactionRepository
+@{
+    var userId = User.GetUserId();
+    var userReactions = ReactionRepository.GetAll(x => x.PostId == Model.Id && x.UserId == userId).Select(x => x.Type).ToHashSet();
 
-<div class="card mb-3">
+    async Task ReactionIcon(ReactionType type)
+    {
+        switch (type)
+        {
+            case ReactionType.Like:
+                <i class="fa-solid fa-thumbs-up"></i>
+                break;
+            case ReactionType.Love:
+                <i class="fa-solid fa-heart"></i>
+                break;
+            case ReactionType.Haha:
+                <i class="fa-solid fa-face-laugh-squint"></i>
+                break;
+            case ReactionType.Wow:
+                <i class="fa-solid fa-surprise"></i>
+                break;
+            case ReactionType.Sad:
+                <i class="fa-solid fa-sad-tear"></i>
+                break;
+            case ReactionType.Angry:
+                <i class="fa-solid  fa-angry"></i>
+                break;
+            default:
+                break;
+        }
+    }
+
+    async Task RenderReaction(ReactionType type)
+    {
+        @if (Model.ReactionCounts.ContainsKey(type))
+        {
+            var userReacted = userReactions.Contains(type);
+
+            <div>
+                <form action="/api/Post/AddReaction" class="@(userReacted ? "d-none" : "") add-reaction-form" data-postid="@Model.Id" data-type="@type">
+                    <input name="postId" value="@Model.Id" hidden />
+                    <input name="type" value="@type" hidden />
+                    <button type="submit" class="btn btn-outline-secondary border-0">
+                        @{
+                            await ReactionIcon(type);
+                        }
+                         @Model.ReactionCounts[type]
+                    </button>
+                </form>
+                <form action="/api/Post/RemoveReaction" class="@(!userReacted ? "d-none" : "") remove-reaction-form" data-postid="@Model.Id" data-type="@type">
+                    <input name="postId" value="@Model.Id" hidden />
+                    <input name="type" value="@type" hidden />
+                    <button type="submit" class="btn btn-outline-secondary border-0 active">
+                        @{
+                            await ReactionIcon(type);
+                        }
+                        @Model.ReactionCounts[type]
+                    </button>
+                </form>
+            </div>
+        }
+    }
+}
+
+<div class="card">
     <div class="card-body">
         <div class="d-flex mb-1">
             <div class="profile-picture-50-container rounded img-thumbnail me-2">
@@ -11,10 +77,51 @@
             </div>
             <div>
                 <h6 class="mb-1 fs-5"><a class="text-muted text-decoration-none" href="/User/@Model.UserName">@Model.UserName</a></h6>
-                <p class="text-muted">@Model.Created</p>
+                <span class="text-muted">@Model.Created</span>
             </div>
         </div>
         <h3 class="mb-2">@Model.Title</h3>
         @Html.Raw(Model.Content)
+    </div>
+    <div class="card-footer">
+        <div class="d-grid gap-2">
+            <div class="d-flex align-items-center gap-1">
+                <div class="flex-grow-1">
+                    <button id="@Model.Id-collapse-comments-button" class="btn btn-outline-secondary w-100" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#@Model.Id-comment-collapse" aria-expanded="false" aria-controls="@Model.Id-comment-collapse">
+                        Show comments
+                    </button>
+                </div>
+
+                @{
+                    await RenderReaction(ReactionType.Like);
+                    await RenderReaction(ReactionType.Love);
+                    await RenderReaction(ReactionType.Haha);
+                    await RenderReaction(ReactionType.Wow);
+                    await RenderReaction(ReactionType.Sad);
+                    await RenderReaction(ReactionType.Angry);
+                }
+            </div>
+            <div id="@Model.Id-comment-collapse" class="collapse comment-collapse" data-postid="@Model.Id">
+                <div class="d-grid gap-2">
+                    <form action="/api/Post/AddComment" method="post" class="comment-form" data-postid="@Model.Id">
+                        <input name="postId" value="@Model.Id" hidden />
+                        <div class="d-flex gap-2 align-items-end">
+                            <div class="form-floating flex-grow-1">
+                                <textarea name="content" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 70px"></textarea>
+                                <label for="floatingTextarea2">Comment</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Post</button>
+                        </div>
+                    </form>
+                    <div id="@Model.Id-comment-container" class="d-grid gap-2">
+                        
+                    </div>
+                    <button class="btn btn-outline-secondary w-100 load-more-comments-button" data-postid="@Model.Id" data-before="@DateTime.UtcNow" type="button">
+                        Load more
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

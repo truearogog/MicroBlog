@@ -30,7 +30,7 @@ namespace MicroBlog.Identity.Managers
             ArgumentNullException.ThrowIfNull(user);
 
             user.ProfilePictureUrl = profilePictureUrl;
-            _memoryCache.Set(CacheNames.UserProfilePictureUrl + user.Id, profilePictureUrl);
+            _memoryCache.Remove(CacheNames.UserProfilePictureUrl + user.Id);
             await UpdateSecurityStampAsync(user).ConfigureAwait(false);
             return await UpdateAsync(user).ConfigureAwait(false);
         }
@@ -48,6 +48,12 @@ namespace MicroBlog.Identity.Managers
             });
 
             return profilePictureUrl ?? string.Empty;
+        }
+
+        public override Task<IdentityResult> SetUserNameAsync(User user, string? userName)
+        {
+            _memoryCache.Remove(CacheNames.Username + user.Id);
+            return base.SetUserNameAsync(user, userName);
         }
 
         public async Task<string> GetUserNameAsync(string userId)

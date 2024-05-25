@@ -8,6 +8,8 @@ namespace MicroBlog.Data.EF
         DbSet<Post> Posts { get; set; }
         DbSet<Subscription> Subscriptions { get; set; }
         DbSet<Block> Blocks { get; set; }
+        DbSet<Reaction> Reactions { get; set; }
+        DbSet<Comment> Comments { get; set; }
 
         int SaveChanges();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

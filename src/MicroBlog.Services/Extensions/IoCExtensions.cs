@@ -10,6 +10,8 @@ namespace MicroBlog.Services.Extensions
         {
             // Register services
             services.AddTransient<IPostService, PostService>();
+            services.AddTransient<IReactionService, ReactionService>();
+            services.AddTransient<ICommentService, CommentService>();
             services.AddSingleton<IUserLoggingService, UserLoggingService>();
 
             return services;

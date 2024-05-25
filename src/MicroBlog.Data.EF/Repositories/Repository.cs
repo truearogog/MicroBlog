@@ -13,7 +13,7 @@ namespace MicroBlog.Data.EF.Repositories
         protected IMapper Mapper = mapper;
         protected IConfigurationProvider MapperConfig => Mapper.ConfigurationProvider;
 
-        public virtual IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null)
+        public virtual IQueryable<T> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null)
         {
             var query = DbSet.AsNoTracking()
                 .ProjectTo<T>(MapperConfig);
@@ -25,11 +25,11 @@ namespace MicroBlog.Data.EF.Repositories
 
             if (orderBy != null)
             {
-                return orderBy(query).AsEnumerable();
+                return orderBy(query);
             }
             else
             {
-                return query.AsEnumerable();
+                return query;
             }
         }
 
@@ -37,7 +37,6 @@ namespace MicroBlog.Data.EF.Repositories
         {
             return Mapper.Map<T>(await DbSet.FindAsync(keys).ConfigureAwait(false));
         }
-
 
         public async Task<bool> Any(Expression<Func<T, bool>> predicate)
         {
@@ -51,11 +50,12 @@ namespace MicroBlog.Data.EF.Repositories
                 .AllAsync(predicate).ConfigureAwait(false);
         }
 
-        public async Task Create(T model)
+        public async Task<T> Create(T model)
         {
             var entity = Mapper.Map<TEntity>(model);
             await DbSet.AddAsync(entity).ConfigureAwait(false);
             await Db.SaveChangesAsync().ConfigureAwait(false);
+            return Mapper.Map<T>(entity);
         }
 
         public async Task CreateRange(IEnumerable<T> models)

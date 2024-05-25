@@ -6,16 +6,16 @@ using System.Linq.Expressions;
 
 namespace MicroBlog.Data.EF.Repositories
 {
-    public class PostRepository(IAppDb db, IMapper mapper) : 
-        Repository<Post, Entities.Post>(db.Posts, db, mapper), IPostRepository
+    public class CommentRepository(IAppDb db, IMapper mapper) :
+        Repository<Comment, Entities.Comment>(db.Comments, db, mapper), ICommentRepository
     {
-        public override IQueryable<Post> GetAll(Expression<Func<Post, bool>>? filter = null, Func<IQueryable<Post>, IOrderedQueryable<Post>>? orderBy = null)
+        public override IQueryable<Comment> GetAll(Expression<Func<Comment, bool>>? filter = null, Func<IQueryable<Comment>, IOrderedQueryable<Comment>>? orderBy = null)
         {
             orderBy ??= x => x.OrderByDescending(y => y.Created);
             return base.GetAll(filter, orderBy);
         }
 
-        public override async Task DeleteRange(IEnumerable<Post> models)
+        public override async Task DeleteRange(IEnumerable<Comment> models)
         {
             var ids = models.Select(x => x.Id).ToHashSet();
             await DbSet.Where(x => ids.Contains(x.Id))

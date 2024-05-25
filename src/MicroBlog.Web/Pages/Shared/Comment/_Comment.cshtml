@@ -1,0 +1,28 @@
+﻿@using Humanizer
+@model Core.Models.Comment
+
+<div class="card">
+    <div class="card-body p-1">
+        <div class="d-flex gap-2">
+            <div class="profile-picture-50-container rounded img-thumbnail flex-shrink-0">
+                <a href="/User/@Model.UserName">
+                    <img src="@Model.UserProfilePictureUrl" />
+                </a>
+            </div>
+            <div class="flex-grow-1">
+                <h6 class="m-0 fs-6"><a class="text-muted text-decoration-none" href="/User/@Model.UserName">@Model.UserName</a></h6>
+                <small class="text-muted">
+                    @if (DateTime.UtcNow.Subtract(Model.Created).TotalDays < 7)
+                    {
+                        @Model.Created.Humanize()
+                    }
+                    else
+                    {
+                        @Model.Created
+                    }
+                </small>
+                <p class="m-0">@Model.Content</p>
+            </div>
+        </div>
+    </div>
+</div>

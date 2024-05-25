@@ -24,7 +24,7 @@ namespace MicroBlog.Web.Controllers.Api
                 return NotFound($"No user with id {{'{userId}'}}.");
             }
 
-            var currentUserId = _userManager.GetUserId(User)!;
+            var currentUserId = User.GetUserId()!;
             await _subscriptionRepository.Create(new Core.Models.Subscription { FromUserId = currentUserId, ToUserId = userId! });
 
             return Ok();
@@ -39,7 +39,7 @@ namespace MicroBlog.Web.Controllers.Api
                 return NotFound($"No user with id {{'{userId}'}}.");
             }
 
-            var currentUserId = _userManager.GetUserId(User)!;
+            var currentUserId = User.GetUserId()!;
             await _subscriptionRepository.Delete(new Core.Models.Subscription { FromUserId = currentUserId, ToUserId = userId! });
 
             return Ok();
@@ -53,7 +53,7 @@ namespace MicroBlog.Web.Controllers.Api
                 return NotFound($"No user with id {{'{userId}'}}.");
             }
 
-            var currentUserId = _userManager.GetUserId(User)!;
+            var currentUserId = User.GetUserId()!;
             await _blockRepository.Create(new Core.Models.Block { UserId = currentUserId, BlockedUserId = userId! });
 
             if (await _subscriptionRepository.Any(x => x.FromUserId == currentUserId && x.ToUserId == userId))
@@ -77,7 +77,7 @@ namespace MicroBlog.Web.Controllers.Api
                 return NotFound($"No user with id {{'{userId}'}}.");
             }
 
-            var currentUserId = _userManager.GetUserId(User)!;
+            var currentUserId = User.GetUserId()!;
             await _blockRepository.Delete(new Core.Models.Block { UserId = currentUserId, BlockedUserId = userId! });
 
             return Ok();

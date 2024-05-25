@@ -41,6 +41,8 @@ namespace MicroBlog.Data.EF.Extensions
             services.Add(new ServiceDescriptor(typeof(IPostRepository), typeof(PostRepository), scope));
             services.Add(new ServiceDescriptor(typeof(ISubscriptionRepository), typeof(SubscriptionRepository), scope));
             services.Add(new ServiceDescriptor(typeof(IBlockRepository), typeof(BlockRepository), scope));
+            services.Add(new ServiceDescriptor(typeof(IReactionRepository), typeof(ReactionRepository), scope));
+            services.Add(new ServiceDescriptor(typeof(ICommentRepository), typeof(CommentRepository), scope));
 
             // Register services
             services.Add(new ServiceDescriptor(typeof(IAppDb), typeof(T), scope));
@@ -51,8 +53,10 @@ namespace MicroBlog.Data.EF.Extensions
                 cfg.AddProfile(typeof(PostProfile));
                 cfg.AddProfile(typeof(SubscriptionProfile));
                 cfg.AddProfile(typeof(BlockProfile));
+                cfg.AddProfile(typeof(ReactionProfile));
+                cfg.AddProfile(typeof(CommentProfile));
             });
-            services.Add(new ServiceDescriptor(typeof(IMapper), new Mapper(config)));
+            services.AddSingleton<IMapper>(new Mapper(config));
 
             return services;
         }

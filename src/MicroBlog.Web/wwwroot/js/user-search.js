@@ -31,7 +31,7 @@
                 data: { search, skip: _pageNumber * pageSize, take: pageSize },
                 dataType: 'html',
                 success: function (html) {
-                    if (html !== "") {
+                    if (!isEmpty(html)) {
                         $(container).append(html);
                         _pageNumber++;
 

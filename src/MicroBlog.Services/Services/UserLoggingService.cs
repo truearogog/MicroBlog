@@ -9,10 +9,7 @@ namespace MicroBlog.Services.Services
 
         public void AddOrUpdateLogin(string userId, DateTime dateTime)
         {
-            if (!_userLogins.ContainsKey(userId))
-            {
-                _userLogins.AddOrUpdate(userId, dateTime, (k, v) => dateTime);
-            }
+            _userLogins.AddOrUpdate(userId, dateTime, (k, v) => dateTime);
         }
 
         public IReadOnlyDictionary<string, DateTime> GetLogins()

@@ -4,6 +4,7 @@ using MicroBlog.Data.EF.SQLServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroBlog.Data.EF.SQLServer.Migrations
 {
     [DbContext(typeof(SQLServerAppDb))]
-    partial class SQLServerAppDbModelSnapshot : ModelSnapshot
+    [Migration("20240522233442_AddReactions")]
+    partial class AddReactions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,38 +38,6 @@ namespace MicroBlog.Data.EF.SQLServer.Migrations
                     b.ToTable("Blocks");
                 });
 
-            modelBuilder.Entity("MicroBlog.Data.EF.Entities.Comment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Created")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Updated")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Comments");
-                });
-
             modelBuilder.Entity("MicroBlog.Data.EF.Entities.Post", b =>
                 {
                     b.Property<Guid>("Id")
@@ -86,7 +57,7 @@ namespace MicroBlog.Data.EF.SQLServer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Updated")
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
@@ -130,17 +101,6 @@ namespace MicroBlog.Data.EF.SQLServer.Migrations
                     b.ToTable("Subscriptions");
                 });
 
-            modelBuilder.Entity("MicroBlog.Data.EF.Entities.Comment", b =>
-                {
-                    b.HasOne("MicroBlog.Data.EF.Entities.Post", "Post")
-                        .WithMany("Comments")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-                });
-
             modelBuilder.Entity("MicroBlog.Data.EF.Entities.Reaction", b =>
                 {
                     b.HasOne("MicroBlog.Data.EF.Entities.Post", "Post")
@@ -154,8 +114,6 @@ namespace MicroBlog.Data.EF.SQLServer.Migrations
 
             modelBuilder.Entity("MicroBlog.Data.EF.Entities.Post", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Reactions");
                 });
 #pragma warning restore 612, 618

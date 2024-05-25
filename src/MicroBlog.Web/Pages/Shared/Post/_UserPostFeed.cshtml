@@ -1,6 +1,6 @@
 ﻿@model (string Url, string UserId)
 
-<div id="post-feed"></div>
+<div id="post-feed" class="d-grid gap-3"></div>
 
 <div id="loading" class="spinner-border" role="status">
     <span class="visually-hidden">Loading...</span>
@@ -9,9 +9,12 @@
 @Html.PartialSectionScripts(
     @<text>
         <script src="~/js/post-feed.js" asp-append-version="true"></script>
+        <script src="~/js/reactions.js" asp-append-version="true"></script>
+        <script src="~/js/comment.js" asp-append-version="true"></script>
         <script>
             $(function () {
                 PostFeedJs.init('#post-feed', '@Model.Url', '@Model.UserId', 10, '@Html.AntiForgeryToken()');
+                CommentJs.init('/api/Post/Comments', 10, '@Html.AntiForgeryToken()');
             })
         </script>
     </text>

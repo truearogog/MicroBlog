@@ -4,7 +4,7 @@
         $('.unblock-form').on('submit', e => handleSubmit(e, '.unblock-form', '.block-form', true));
     }
 
-    function handleSubmit(e, currentFormSelector, targetFormSelector, showSubsribeForms) {
+    function handleSubmit(e, currentFormSelector, targetFormSelector, showSubscribeForms) {
         e.preventDefault();
         const $form = $(e.target);
         const userId = $form.data('userid');
@@ -13,10 +13,9 @@
 
         $.post(url, data)
             .done(function () {
-
                 $(targetFormSelector + `[data-userId=${userId}]`).removeClass('d-none');
                 $(currentFormSelector + `[data-userId=${userId}]`).addClass('d-none');
-                toggleSubscribeForms(showSubsribeForms, userId);
+                toggleSubscribeForms(showSubscribeForms, userId);
             });
     }
 

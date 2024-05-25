@@ -1,0 +1,6 @@
+﻿@model IEnumerable<Core.Models.Comment>
+
+@foreach(var comment in Model)
+{
+    <partial name="_Comment.cshtml" model="@comment" />
+}
