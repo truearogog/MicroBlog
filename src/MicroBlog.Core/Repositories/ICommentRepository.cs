@@ -4,5 +4,6 @@ namespace MicroBlog.Core.Repositories
 {
     public interface ICommentRepository : IRepository<Comment>
     {
+        Task DeleteForUser(string userId);
     }
 }

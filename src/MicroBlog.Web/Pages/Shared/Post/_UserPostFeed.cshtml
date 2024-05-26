@@ -13,7 +13,7 @@
         <script src="~/js/comment.js" asp-append-version="true"></script>
         <script>
             $(function () {
-                PostFeedJs.init('#post-feed', '@Model.Url', '@Model.UserId', 10, '@Html.AntiForgeryToken()');
+                PostFeedJs.init('#post-feed', '@Model.Url', '@Model.UserId', '@DateTime.UtcNow.AddMinutes(1)', 10, '@Html.AntiForgeryToken()');
                 CommentJs.init('/api/Post/Comments', 10, '@Html.AntiForgeryToken()');
             })
         </script>

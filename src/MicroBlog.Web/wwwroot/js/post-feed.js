@@ -1,27 +1,27 @@
 ﻿PostFeedJs = (function () {
     let _pageNumber = 0;
 
-	function init(container, postUrl, userId, pageSize, xsrfToken) {
+	function init(container, postUrl, userId, before, pageSize, xsrfToken) {
 
 		$(container).empty();
 
 		const win = $(window);
 		win.on('scroll', function () {
 			if ($(document).height() - win.height() == win.scrollTop()) {
-				fetch(container, postUrl, userId, pageSize, xsrfToken);
+				fetch(container, postUrl, userId, before, pageSize, xsrfToken);
 			}
 		});
 
-		fetch(container, postUrl, userId, pageSize, xsrfToken);
+		fetch(container, postUrl, userId, before, pageSize, xsrfToken);
     }
 
-	function fetch(container, postUrl, userId, pageSize, xsrfToken) {
+	function fetch(container, postUrl, userId, before, pageSize, xsrfToken) {
 		$('#loading').show();
 
 		$.ajax({
 			url: postUrl,
 			headers: { RequestVerificationToken: xsrfToken },
-			data: { userId, skip: _pageNumber * pageSize, take: pageSize },
+			data: { userId, before, skip: _pageNumber * pageSize, take: pageSize },
 			dataType: 'html',
 			success: function (html) {
 				if (!isEmpty(html)) {

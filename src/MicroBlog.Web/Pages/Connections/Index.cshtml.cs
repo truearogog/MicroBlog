@@ -13,7 +13,6 @@ namespace MicroBlog.Web.Pages.Connections
         private readonly ISubscriptionRepository _subscriptionRepository = subscriptionRepository;
         private readonly UserManager _userManager = userManager;
 
-
         public IEnumerable<Identity.Models.User> SubscribedByUsers { get; set; } = Enumerable.Empty<Identity.Models.User>();
         public IEnumerable<Identity.Models.User> SubscribedToUsers { get; set; } = Enumerable.Empty<Identity.Models.User>();
 

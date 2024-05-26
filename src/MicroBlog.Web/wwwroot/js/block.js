@@ -1,7 +1,7 @@
 ﻿BlockJs = (function () {
     function init() {
-        $('.block-form').on('submit', e => handleSubmit(e, '.block-form', '.unblock-form', false));
-        $('.unblock-form').on('submit', e => handleSubmit(e, '.unblock-form', '.block-form', true));
+        $('.block-form').off('submit').on('submit', e => handleSubmit(e, '.block-form', '.unblock-form', false));
+        $('.unblock-form').off('submit').on('submit', e => handleSubmit(e, '.unblock-form', '.block-form', true));
     }
 
     function handleSubmit(e, currentFormSelector, targetFormSelector, showSubscribeForms) {

@@ -12,21 +12,11 @@ using System.Text.Encodings.Web;
 
 namespace MicroBlog.Web.Areas.Identity.Pages.Account.Manage
 {
-    public class EmailModel : PageModel
+    public class EmailModel(UserManager<User> userManager, SignInManager<User> signInManager, IEmailSender emailSender) : PageModel
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
-        private readonly IEmailSender _emailSender;
-
-        public EmailModel(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
-            IEmailSender emailSender)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _emailSender = emailSender;
-        }
+        private readonly UserManager<User> _userManager = userManager;
+        private readonly SignInManager<User> _signInManager = signInManager;
+        private readonly IEmailSender _emailSender = emailSender;
 
         public string Email { get; set; }
 
@@ -88,6 +78,7 @@ namespace MicroBlog.Web.Areas.Identity.Pages.Account.Manage
             var email = await _userManager.GetEmailAsync(user);
             if (Input.NewEmail != email)
             {
+                /*
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -102,6 +93,22 @@ namespace MicroBlog.Web.Areas.Identity.Pages.Account.Manage
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                 StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                */
+
+                if ((await _userManager.FindByEmailAsync(Input.NewEmail)) != null)
+                {
+                    StatusMessage = "Error: Email address is already taken.";
+                    return RedirectToPage();
+                }
+
+                var setEmailResult = await _userManager.SetEmailAsync(user, Input.NewEmail);
+                if (!setEmailResult.Succeeded)
+                {
+                    StatusMessage = "Error: Unexpected error when trying to set email.";
+                    return RedirectToPage();
+                }
+
+                StatusMessage = "Your email has been updated.";
                 return RedirectToPage();
             }
 

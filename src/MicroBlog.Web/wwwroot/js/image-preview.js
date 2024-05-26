@@ -4,7 +4,7 @@
     function init(inputId, previewId) {
         _previewId = previewId;
 
-        $(inputId).change(function (e) {
+        $(inputId).on('change', function (e) {
             const file = e.target.files[0];
 
             if (file && file.type.startsWith('image/')) {

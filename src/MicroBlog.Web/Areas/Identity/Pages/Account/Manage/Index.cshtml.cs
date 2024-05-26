@@ -95,7 +95,7 @@ namespace MicroBlog.Web.Areas.Identity.Pages.Account.Manage
             }
             catch (Exception)
             {
-                StatusMessage = "Unexpected error when trying to set profile picture.";
+                StatusMessage = "Error: Unexpected error when trying to set profile picture.";
                 return RedirectToPage();
             }
 
@@ -104,7 +104,7 @@ namespace MicroBlog.Web.Areas.Identity.Pages.Account.Manage
                 var setDescriptionResult = await _userManager.SetDescriptionAsync(user, Input.Description);
                 if (!setDescriptionResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set description.";
+                    StatusMessage = "Error:Unexpected error when trying to set description.";
                     return RedirectToPage();
                 }
             }
@@ -114,14 +114,14 @@ namespace MicroBlog.Web.Areas.Identity.Pages.Account.Manage
             {
                 if (_userManager.Users.Any(x => x.UserName == Input.Username))
                 {
-                    StatusMessage = "Username is already taken.";
+                    StatusMessage = "Error: Username is already taken.";
                     return RedirectToPage();
                 }
 
                 var setUsernameResult = await _userManager.SetUserNameAsync(user, Input.Username);
                 if (!setUsernameResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set username.";
+                    StatusMessage = "Error: Unexpected error when trying to set username.";
                     return RedirectToPage();
                 }
             }
@@ -132,7 +132,7 @@ namespace MicroBlog.Web.Areas.Identity.Pages.Account.Manage
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    StatusMessage = "Error: Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
             }

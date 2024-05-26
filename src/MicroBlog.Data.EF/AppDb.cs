@@ -23,11 +23,13 @@ namespace MicroBlog.Data.EF
             modelBuilder.Entity<Block>().HasKey(x => new { x.UserId, x.BlockedUserId });
 
             modelBuilder.Entity<Reaction>().HasKey(x => new { x.PostId, x.UserId, x.Type });
-            modelBuilder.Entity<Reaction>().HasOne(x => x.Post).WithMany(x => x.Reactions).HasForeignKey(x => x.PostId);
+            modelBuilder.Entity<Reaction>().HasOne(x => x.Post).WithMany(x => x.Reactions).HasForeignKey(x => x.PostId)
+                .OnDelete(DeleteBehavior.ClientCascade);
 
             modelBuilder.Entity<Comment>().HasKey(x => x.Id);
             modelBuilder.Entity<Comment>().HasIndex(x => x.PostId);
-            modelBuilder.Entity<Comment>().HasOne(x => x.Post).WithMany(x => x.Comments).HasForeignKey(x => x.PostId);
+            modelBuilder.Entity<Comment>().HasOne(x => x.Post).WithMany(x => x.Comments).HasForeignKey(x => x.PostId)
+                .OnDelete(DeleteBehavior.ClientCascade);
         }
     }
 }

@@ -2,7 +2,7 @@
 @model EmailModel
 @{
     ViewData["Title"] = "Manage Email";
-    ViewData["ActivePage"] = ManageNavPages.Email;
+    ViewData[nameof(ManageNavPageType)] = ManageNavPageType.Email;
 }
 
 <h3>@ViewData["Title"]</h3>
@@ -11,6 +11,7 @@
     <div class="col-md-6">
         <form id="email-form" method="post">
             <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+            <!--
             @if (Model.IsEmailConfirmed)
             {
                 <div class="form-floating mb-3 input-group">
@@ -31,6 +32,7 @@
                     <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
                 </div>
             }
+            -->
             <div class="form-floating mb-3">
                 <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Please enter new email." />
                 <label asp-for="Input.NewEmail" class="form-label"></label>

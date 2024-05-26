@@ -14,5 +14,12 @@ namespace MicroBlog.Data.EF.Repositories
                 .ExecuteDeleteAsync().ConfigureAwait(false);
             await Db.SaveChangesAsync().ConfigureAwait(false);
         }
+
+
+        public async Task DeleteForUser(string userId)
+        {
+            await DbSet.Where(x => x.FromUserId == userId || x.ToUserId == userId).ExecuteDeleteAsync().ConfigureAwait(false);
+            await Db.SaveChangesAsync().ConfigureAwait(false);
+        }
     }
 }

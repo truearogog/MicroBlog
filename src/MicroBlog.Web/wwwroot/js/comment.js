@@ -30,7 +30,33 @@
             button.removeClass('active');
         });
 
+        const a = $('.comment-container');
+        $('.comment-container').each(function () {
+            const container = $(this);
+            const postId = container.data('postid');
+            const before = container.data('before');
 
+            const button = $(`.load-more-comments-button[data-postid=${postId}]`);
+            button.addClass('d-none');
+
+            if (!(postId in _commentSkips)) {
+                _commentSkips[postId] = 0;
+
+                $.ajax({
+                    url: _commentUrl,
+                    headers: { RequestVerificationToken: _xsrfToken },
+                    data: { postId, before, skip: _commentSkips[postId], take: _pageSize },
+                    dataType: 'html',
+                    success: function (html) {
+                        if (!isEmpty(html)) {
+                            container.append(html);
+                            _commentSkips[postId] += _pageSize;
+                            button.removeClass('d-none');
+                        }
+                    }
+                });
+            }
+        })
     }
 
     function handleSubmit(e)
@@ -53,10 +79,6 @@
         button.addClass('d-none');
         const postId = button.data('postid');
         const before = button.data('before');
-
-        if (!(postId in _commentSkips)) {
-            _commentSkips[postId] = 0;
-        }
 
         $.ajax({
             url: _commentUrl,

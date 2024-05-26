@@ -19,16 +19,16 @@ namespace MicroBlog.Web.Controllers.Api
         private readonly ICommentService _commentService = commentService;
 
         [HttpGet("FromUser")]
-        public async Task<IActionResult> FromUser(string userId, int skip, int take)
+        public async Task<IActionResult> FromUser(string userId, DateTime before, int skip, int take)
         {
-            var posts = await _postService.GetPostsFromUserAsync(userId, skip, take);
+            var posts = await _postService.GetPostsFromUserAsync(userId, before, skip, take);
             return PartialView("~/Pages/Shared/Post/_PostList.cshtml", posts);
         }
 
         [HttpGet("ForUser")]
-        public async Task<IActionResult> ForUser(string userId, int skip, int take)
+        public async Task<IActionResult> ForUser(string userId, DateTime before, int skip, int take)
         {
-            var posts = await _postService.GetPostsForUserAsync(userId, skip, take);
+            var posts = await _postService.GetPostsForUserAsync(userId, before, skip, take);
             return PartialView("~/Pages/Shared/Post/_PostList.cshtml", posts);
         }
 

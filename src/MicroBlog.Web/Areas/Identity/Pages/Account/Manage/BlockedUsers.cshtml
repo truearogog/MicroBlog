@@ -1,0 +1,21 @@
+﻿@page
+@model MicroBlog.Web.Areas.Identity.Pages.Account.Manage.BlockedUsersModel
+@{
+    ViewData["Title"] = "Blocked users";
+    ViewData[nameof(ManageNavPageType)] = ManageNavPageType.BlockedUsers;
+}
+
+<div class="d-flex flex-column gap-3">
+    <partial name="~/Pages/Shared/User/_UserList.cshtml" model="@Model.BlockedUsers" />
+</div>
+
+@section Scripts {
+    <script src="~/js/block.js" asp-append-version="true"></script>
+    <script src="~/js/subscribe.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(function () {
+            SubscribeJs.init();
+            BlockJs.init();
+        });
+    </script>
+}

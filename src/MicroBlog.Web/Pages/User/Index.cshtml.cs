@@ -2,6 +2,7 @@
 
 using Ganss.Xss;
 using MicroBlog.Core.Repositories;
+using MicroBlog.Identity.Extensions;
 using MicroBlog.Identity.Managers;
 using MicroBlog.Web.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -50,7 +51,8 @@ namespace MicroBlog.Web.Pages.User
         {
             if (!ModelState.IsValid)
             {
-                return Page();
+                var username = User.GetUserName()!;
+                return RedirectToPage(new { username });
             }
 
             try

@@ -26,15 +26,15 @@ namespace MicroBlog.Services.Services
             return posts;
         }
 
-        public async Task<IEnumerable<Post>> GetPostsFromUserAsync(string userId, int skip, int take)
+        public async Task<IEnumerable<Post>> GetPostsFromUserAsync(string userId, DateTime before, int skip, int take)
         {
-            return await GetPostsAsync(x => x.UserId == userId, skip, take);
+            return await GetPostsAsync(x => x.UserId == userId && x.Created < before, skip, take);
         }
 
-        public async Task<IEnumerable<Post>> GetPostsForUserAsync(string userId, int skip, int take)
+        public async Task<IEnumerable<Post>> GetPostsForUserAsync(string userId, DateTime before, int skip, int take)
         {
             var subscriptions = _subscriptionRepository.GetAll(x => x.FromUserId == userId).Select(x => x.ToUserId).ToHashSet();
-            return await GetPostsAsync(x => subscriptions.Contains(x.UserId), skip, take);
+            return await GetPostsAsync(x => subscriptions.Contains(x.UserId) && x.Created < before, skip, take);
         }
     }
 }
