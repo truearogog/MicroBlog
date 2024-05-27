@@ -19,23 +19,35 @@ namespace MicroBlog.Web.Controllers.Api
         private readonly ICommentService _commentService = commentService;
 
         [HttpGet("FromUser")]
-        public async Task<IActionResult> FromUser(string userId, DateTime before, int skip, int take)
+        public async Task<IActionResult> FromUser(string userId, string before, int skip, int take)
         {
-            var posts = await _postService.GetPostsFromUserAsync(userId, before, skip, take);
+            if (!DateTime.TryParse(before, out var beforeDateTime))
+            {
+                return BadRequest();
+            }
+            var posts = await _postService.GetPostsFromUserAsync(userId, beforeDateTime, skip, take);
             return PartialView("~/Pages/Shared/Post/_PostList.cshtml", posts);
         }
 
         [HttpGet("ForUser")]
-        public async Task<IActionResult> ForUser(string userId, DateTime before, int skip, int take)
+        public async Task<IActionResult> ForUser(string userId, string before, int skip, int take)
         {
-            var posts = await _postService.GetPostsForUserAsync(userId, before, skip, take);
+            if (!DateTime.TryParse(before, out var beforeDateTime))
+            {
+                return BadRequest();
+            }
+            var posts = await _postService.GetPostsForUserAsync(userId, beforeDateTime, skip, take);
             return PartialView("~/Pages/Shared/Post/_PostList.cshtml", posts);
         }
 
         [HttpGet("Comments")]
-        public async Task<IActionResult> Comments(Guid postId, DateTime before, int skip, int take)
+        public async Task<IActionResult> Comments(Guid postId, string before, int skip, int take)
         {
-            var comments = await _commentService.GetComments(postId, before, skip, take);
+            if (!DateTime.TryParse(before, out var beforeDateTime))
+            {
+                return BadRequest();
+            }
+            var comments = await _commentService.GetComments(postId, beforeDateTime, skip, take);
             return PartialView("~/Pages/Shared/Comment/_CommentList.cshtml", comments);
         }
 
