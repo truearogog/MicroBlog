@@ -126,7 +126,7 @@
                 <div class="d-grid gap-2">
                     @if (!blocked)
                     {
-                        <form action="/api/Post/AddComment" method="post" class="comment-form" data-postid="@Model.Id">
+                        <form action="/api/Comment/CreateComment" method="post" class="comment-form" data-postid="@Model.Id">
                             <input name="postId" value="@Model.Id" hidden />
                             <div class="d-flex gap-2 align-items-end">
                                 <div class="form-floating flex-grow-1">

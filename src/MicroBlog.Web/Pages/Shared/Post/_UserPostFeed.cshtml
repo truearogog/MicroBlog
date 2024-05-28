@@ -14,7 +14,7 @@
         <script>
             $(function () {
                 PostFeedJs.init('#post-feed', '@Model.Url', '@Model.UserId', '@DateTime.UtcNow.AddMinutes(1)', 10, '@Html.AntiForgeryToken()');
-                CommentJs.init('/api/Post/Comments', 10, '@Html.AntiForgeryToken()');
+                CommentJs.init('/api/Comment/Comments', 10, '@Html.AntiForgeryToken()');
             })
         </script>
     </text>

@@ -29,16 +29,15 @@
 					_skip += pageSize;
 					ReactionsJs.init();
 					CommentJs.reloadCommentForms();
-					initDeletePostButtons();
+					reloadDeletePostButtons();
 				}
 				$('#loading').hide();
 			}
 		});
 	}
 
-	function initDeletePostButtons() {
-		const a = $('.delete-post-button');
-		a.off('click').on('click', function () {
+	function reloadDeletePostButtons() {
+		$('.delete-post-button').off('click').on('click', function () {
 			const button = $(this);
 			const postId = button.data('postid');
 			button.addClass('d-none');

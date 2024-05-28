@@ -15,11 +15,16 @@ namespace MicroBlog.Data.EF.Repositories
             return base.GetAll(filter, orderBy);
         }
 
+        public async Task Delete(Guid id)
+        {
+            await DbSet.Where(x => x.Id == id).ExecuteDeleteAsync().ConfigureAwait(false);
+            await Db.SaveChangesAsync().ConfigureAwait(false);
+        }
+
         public override async Task DeleteRange(IEnumerable<Comment> models)
         {
             var ids = models.Select(x => x.Id).ToHashSet();
-            await DbSet.Where(x => ids.Contains(x.Id))
-                .ExecuteDeleteAsync().ConfigureAwait(false);
+            await DbSet.Where(x => ids.Contains(x.Id)).ExecuteDeleteAsync().ConfigureAwait(false);
             await Db.SaveChangesAsync().ConfigureAwait(false);
         }
 

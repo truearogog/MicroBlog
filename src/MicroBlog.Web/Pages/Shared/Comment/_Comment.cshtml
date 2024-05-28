@@ -1,7 +1,12 @@
 ﻿@using Humanizer
+@using MicroBlog.Identity.Extensions
 @model Core.Models.Comment
+@{
+    var userId = User.GetUserId();
+    var sameUser = Model.UserId == userId;
+}
 
-<div class="card">
+<div id="comment-card-@Model.Id" class="card">
     <div class="card-body p-1">
         <div class="d-flex gap-2">
             <div class="profile-picture-50-container rounded img-thumbnail flex-shrink-0">
@@ -10,17 +15,41 @@
                 </a>
             </div>
             <div class="flex-grow-1">
-                <h6 class="m-0 fs-6"><a class="text-muted text-decoration-none" href="/User/@Model.UserName">@Model.UserName</a></h6>
-                <small class="text-muted">
-                    @if (DateTime.UtcNow.Subtract(Model.Created).TotalDays < 7)
+                <div class="d-flex">
+                    <div class="flex-grow-1">
+                        <h6 class="m-0 fs-6"><a class="text-muted text-decoration-none" href="/User/@Model.UserName">@Model.UserName</a></h6>
+                        <small class="text-muted">
+                            @if (DateTime.UtcNow.Subtract(Model.Created).TotalDays < 7)
+                            {
+                                @Model.Created.Humanize()
+                            }
+                            else
+                            {
+                                @Model.Created
+                            }
+                        </small>
+                    </div>
+                    @if (sameUser)
                     {
-                        @Model.Created.Humanize()
+                        <div>
+                            <button type="button" class="btn btn-outline-danger border-0 delete-comment-button" data-commentid="@Model.Id">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                            <form action="/api/Comment/DeleteComment" class="d-none delete-comment-form" data-commentid="@Model.Id" data-postid="@Model.PostId">
+                                <input name="commentId" value="@Model.Id" hidden />
+                                <div class="d-flex align-items-center gap-2">
+                                    <label class="text-danger">Are you sure?</label>
+                                    <button type="submit" class="btn btn-outline-danger border-0">
+                                        Delete
+                                    </button>
+                                    <button type="reset" class="btn btn-outline-primary border-0 cancel-delete-comment-button" data-commentid="@Model.Id">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     }
-                    else
-                    {
-                        @Model.Created
-                    }
-                </small>
+                </div>
                 <p class="m-0">@Model.Content</p>
             </div>
         </div>
