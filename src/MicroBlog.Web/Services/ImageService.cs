@@ -59,7 +59,10 @@ namespace MicroBlog.Web.Services
             await _imageRepository.Delete(new Core.Models.Image { Path = url, UserId = userId });
 
             var filePath = _webHostEnvironment.WebRootPath + url;
-            File.Delete(filePath);
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
         }
 
         public async Task DeleteForUser(string userId)
