@@ -8,8 +8,9 @@
 @inject IBlockRepository BlockRepository
 @{
     var userId = User.GetUserId();
+    var sameUser = Model.UserId == userId;
     var userReactions = ReactionRepository.GetAll(x => x.PostId == Model.Id && x.UserId == userId).Select(x => x.Type).ToHashSet();
-    var blocked = await BlockRepository.Any(x => x.UserId == Model.UserId && x.BlockedUserId == userId);
+    var blocked = !sameUser && await BlockRepository.Any(x => x.UserId == Model.UserId && x.BlockedUserId == userId);
 
     async Task ReactionIcon(ReactionType type)
     {
@@ -32,17 +33,17 @@
             var userReacted = userReactions.Contains(type);
 
             <div>
-                <form action="/api/Post/AddReaction" class="@(userReacted ? "d-none" : "") add-reaction-form" data-postid="@Model.Id" data-type="@type">
+                <form action="/api/Post/CreateReaction" class="@(userReacted ? "d-none" : "") add-reaction-form" data-postid="@Model.Id" data-type="@type">
                     <input name="postId" value="@Model.Id" hidden />
                     <input name="type" value="@type" hidden />
                     <button type="submit" class="btn btn-outline-secondary border-0" @(blocked ? "disabled" : "")>
                         @{
                             await ReactionIcon(type);
                         }
-                         @Model.ReactionCounts[type]
+                        @Model.ReactionCounts[type]
                     </button>
                 </form>
-                <form action="/api/Post/RemoveReaction" class="@(!userReacted ? "d-none" : "") remove-reaction-form" data-postid="@Model.Id" data-type="@type">
+                <form action="/api/Post/DeleteReaction" class="@(!userReacted ? "d-none" : "") remove-reaction-form" data-postid="@Model.Id" data-type="@type">
                     <input name="postId" value="@Model.Id" hidden />
                     <input name="type" value="@type" hidden />
                     <button type="submit" class="btn btn-outline-secondary border-0 active" @(blocked ? "disabled" : "")>
@@ -57,15 +58,15 @@
     }
 }
 
-<div class="card">
+<div id="post-card-@Model.Id" class="card">
     <div class="card-body">
-        <div class="d-flex mb-1">
-            <div class="profile-picture-50-container rounded img-thumbnail me-2">
+        <div class="d-flex gap-2 mb-1">
+            <div class="profile-picture-50-container rounded img-thumbnail">
                 <a href="/User/@Model.UserName">
                     <img src="@Model.UserProfilePictureUrl" />
                 </a>
             </div>
-            <div>
+            <div class="flex-grow-1">
                 <h6 class="mb-1 fs-5"><a class="text-muted text-decoration-none" href="/User/@Model.UserName">@Model.UserName</a></h6>
                 <span class="text-muted">
                     @if (DateTime.UtcNow.Subtract(Model.Created).TotalDays < 7)
@@ -78,6 +79,26 @@
                     }
                 </span>
             </div>
+            @if (sameUser)
+            {
+                <div>
+                    <button type="button" class="btn btn-outline-danger border-0 delete-post-button" data-postid="@Model.Id">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                    <form action="/api/Post/DeletePost" class="d-none delete-post-form" data-postid="@Model.Id">
+                        <input name="postId" value="@Model.Id" hidden />
+                        <div class="d-flex align-items-center gap-2">
+                            <label class="text-danger">Are you sure?</label>
+                            <button type="submit" class="btn btn-outline-danger border-0">
+                                Delete
+                            </button>
+                            <button type="reset" class="btn btn-outline-primary border-0 cancel-delete-post-button" data-postid="@Model.Id">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            }
         </div>
         <h3 class="mb-2">@Model.Title</h3>
         @Html.Raw(Model.Content)

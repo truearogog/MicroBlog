@@ -2,8 +2,7 @@
 
 namespace MicroBlog.Core.Repositories
 {
-    public interface IReactionRepository : IRepository<Reaction>
+    public interface IReactionRepository : IUserRelatedRepository<Reaction>
     {
-        Task DeleteForUser(string userId);
     }
 }

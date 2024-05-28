@@ -59,8 +59,8 @@ namespace MicroBlog.Web.Controllers.Api
             return PartialView("~/Pages/Shared/Comment/_Comment.cshtml", comment);
         }
 
-        [HttpPost("AddReaction")]
-        public async Task<IActionResult> AddReaction([FromForm] Guid postId, [FromForm] ReactionType type)
+        [HttpPost("CreateReaction")]
+        public async Task<IActionResult> CreateReaction([FromForm] Guid postId, [FromForm] ReactionType type)
         {
             if (!await _postRepository.Any(x => x.Id == postId))
             {
@@ -73,10 +73,9 @@ namespace MicroBlog.Web.Controllers.Api
             return Ok();
         }
 
-        [HttpPost("RemoveReaction")]
-        public async Task<IActionResult> RemoveReaction([FromForm] Guid postId, [FromForm] ReactionType type)
+        [HttpPost("DeleteReaction")]
+        public async Task<IActionResult> DeleteReaction([FromForm] Guid postId, [FromForm] ReactionType type)
         {
-
             if (!await _postRepository.Any(x => x.Id == postId))
             {
                 return NotFound($"No post with id {{'{postId}'}}.");
@@ -86,6 +85,26 @@ namespace MicroBlog.Web.Controllers.Api
             await _reactionRepository.Delete(new Core.Models.Reaction { PostId = postId, UserId = currentUserId, Type = type });
 
             return Ok();
+        }
+
+        [HttpPost("DeletePost")]
+        public async Task<IActionResult> DeletePost([FromForm] Guid postId)
+        {
+            try
+            {
+                var userId = User.GetUserId();
+                if (!await _postRepository.Any(x => x.Id == postId && x.UserId == userId))
+                {
+                    return Unauthorized();
+                }
+
+                await _postRepository.Delete(new Core.Models.Post { Id = postId, UserId = userId, Content = "", Title = "" });
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using MicroBlog.Core.Repositories;
 using MicroBlog.Identity.Managers;
 using MicroBlog.Identity.Models;
 using MicroBlog.Web.Services;
@@ -10,7 +11,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MicroBlog.Web.Areas.Identity.Pages.Account.Manage
 {
-    public class IndexModel(UserManager userManager, SignInManager<User> signInManager, ImageService imageService) : PageModel
+    public class IndexModel(UserManager userManager, SignInManager<User> signInManager, ImageService imageService, 
+        IImageRepository imageRepository) : PageModel
     {
         private readonly UserManager _userManager = userManager;
         private readonly SignInManager<User> _signInManager = signInManager;
@@ -88,7 +90,7 @@ namespace MicroBlog.Web.Areas.Identity.Pages.Account.Manage
                     var url = await _imageService.SaveProfilePictureAsync(Input.ProfilePicture);
                     if (profilePictureUrl != null)
                     {
-                        _imageService.Delete(profilePictureUrl);
+                        await _imageService.Delete(profilePictureUrl);
                     }
                     await _userManager.SetProfilePictureAsync(user, url);
                 }

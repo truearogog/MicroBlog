@@ -4,6 +4,7 @@ using MicroBlog.Identity.Extensions;
 using MicroBlog.Identity.Models;
 using MicroBlog.Identity.SQLServer;
 using MicroBlog.Services.Extensions;
+using MicroBlog.Web.Extensions;
 using MicroBlog.Web.Middleware;
 using MicroBlog.Web.Services;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,7 @@ namespace MicroBlog.Web
                 .AddEntityFrameworkStores<SQLServerIdentityDb>();
 
             builder.Services.AddScoped<ImageService>();
+            builder.Services.AddHtmlSanitizer();
 
             builder.Services.AddRazorPages();
             builder.Services.AddControllers();

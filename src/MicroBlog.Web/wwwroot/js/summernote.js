@@ -13,7 +13,7 @@
             callbacks: {
                 onImageUpload: function (files) {
                     uploadImages(files, selector, imageUploadUrl);
-                }
+                },
             }
         });
     }

@@ -2,8 +2,7 @@
 
 namespace MicroBlog.Core.Repositories
 {
-    public interface IPostRepository : IRepository<Post>
+    public interface IPostRepository : IUserRelatedRepository<Post>
     {
-        Task DeleteForUser(string userId);
     }
 }

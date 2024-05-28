@@ -2,6 +2,7 @@
 
 using MicroBlog.Core.Repositories;
 using MicroBlog.Identity.Models;
+using MicroBlog.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,9 +10,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MicroBlog.Web.Areas.Identity.Pages.Account.Manage
 {
-    public class DeletePersonalDataModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<DeletePersonalDataModel> logger, 
-        IPostRepository postRepository, IBlockRepository blockRepository, ICommentRepository commentRepository, 
-        IReactionRepository reactionRepository, ISubscriptionRepository subscriptionRepository) : PageModel
+    public class DeletePersonalDataModel(UserManager<User> userManager, SignInManager<User> signInManager, 
+        ILogger<DeletePersonalDataModel> logger, IPostRepository postRepository, IBlockRepository blockRepository, 
+        ICommentRepository commentRepository, IReactionRepository reactionRepository, ISubscriptionRepository subscriptionRepository, 
+        ImageService imageService) : PageModel
     {
         private readonly UserManager<User> _userManager = userManager;
         private readonly SignInManager<User> _signInManager = signInManager;
@@ -21,6 +23,7 @@ namespace MicroBlog.Web.Areas.Identity.Pages.Account.Manage
         private readonly ICommentRepository _commentRepository = commentRepository;
         private readonly IReactionRepository _reactionRepository = reactionRepository;
         private readonly ISubscriptionRepository _subscriptionRepository = subscriptionRepository;
+        private readonly ImageService _imageService = imageService;
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -69,6 +72,7 @@ namespace MicroBlog.Web.Areas.Identity.Pages.Account.Manage
             await _commentRepository.DeleteForUser(user.Id);
             await _reactionRepository.DeleteForUser(user.Id);
             await _subscriptionRepository.DeleteForUser(user.Id);
+            await _imageService.DeleteForUser(user.Id);
 
             var result = await _userManager.DeleteAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);

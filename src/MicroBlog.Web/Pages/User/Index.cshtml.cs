@@ -14,12 +14,13 @@ namespace MicroBlog.Web.Pages.User
     [Authorize]
     [BindProperties]
     public class IndexModel(IPostRepository postRepository, ISubscriptionRepository subscriptionRepository, 
-        IBlockRepository blockRepository, UserManager userManager) : PageModel
+        IBlockRepository blockRepository, UserManager userManager, IHtmlSanitizer htmlSanitizer) : PageModel
     {
         private readonly IPostRepository _postRepository = postRepository;
         private readonly ISubscriptionRepository _subscriptionRepository = subscriptionRepository;
         private readonly IBlockRepository _blockRepository = blockRepository;
         private readonly UserManager _userManager = userManager;
+        private readonly IHtmlSanitizer _htmlSanitizer = htmlSanitizer;
 
         public Identity.Models.User ViewUser { get; set; }
         public bool SameUser { get; set; }
@@ -58,11 +59,7 @@ namespace MicroBlog.Web.Pages.User
             try
             {
                 var user = await _userManager.GetUserAsync(User);
-
-                var sanitizer = new HtmlSanitizer();
-                sanitizer.AllowedAttributes.Add("class");
-                var sanitizedContent = sanitizer.Sanitize(CreatePostInput.Content);
-
+                var sanitizedContent = _htmlSanitizer.Sanitize(CreatePostInput.Content);
                 var post = new Core.Models.Post
                 {
                     Title = CreatePostInput.Title,

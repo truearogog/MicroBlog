@@ -10,6 +10,7 @@ namespace MicroBlog.Data.EF
         public DbSet<Block> Blocks { get; set; }
         public DbSet<Reaction> Reactions { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,12 +25,15 @@ namespace MicroBlog.Data.EF
 
             modelBuilder.Entity<Reaction>().HasKey(x => new { x.PostId, x.UserId, x.Type });
             modelBuilder.Entity<Reaction>().HasOne(x => x.Post).WithMany(x => x.Reactions).HasForeignKey(x => x.PostId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Comment>().HasKey(x => x.Id);
             modelBuilder.Entity<Comment>().HasIndex(x => x.PostId);
             modelBuilder.Entity<Comment>().HasOne(x => x.Post).WithMany(x => x.Comments).HasForeignKey(x => x.PostId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Image>().HasKey(x => x.Path);
+            modelBuilder.Entity<Image>().HasIndex(x => x.UserId);
         }
     }
 }

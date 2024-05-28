@@ -2,7 +2,7 @@
 
 namespace MicroBlog.Core.Repositories
 {
-    public interface ICommentRepository : IUserRelatedRepository<Comment>
+    public interface IImageRepository : IUserRelatedRepository<Image>
     {
     }
 }

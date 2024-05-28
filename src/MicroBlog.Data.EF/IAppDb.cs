@@ -10,6 +10,7 @@ namespace MicroBlog.Data.EF
         DbSet<Block> Blocks { get; set; }
         DbSet<Reaction> Reactions { get; set; }
         DbSet<Comment> Comments { get; set; }
+        DbSet<Image> Images { get; set; }
 
         int SaveChanges();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
