@@ -1,5 +1,6 @@
 ﻿using MicroBlog.Data.EF.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace MicroBlog.Data.EF
 {
@@ -11,6 +12,8 @@ namespace MicroBlog.Data.EF
         DbSet<Reaction> Reactions { get; set; }
         DbSet<Comment> Comments { get; set; }
         DbSet<Image> Images { get; set; }
+
+        ChangeTracker ChangeTracker { get; }
 
         int SaveChanges();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

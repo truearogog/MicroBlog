@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace MicroBlog.Data.EF.Repositories
 {
-    public abstract class Repository<T, TEntity>(DbSet<TEntity> dbSet, IAppDb db, IMapper mapper) : IRepository<T> where TEntity : class
+    public abstract class Repository<T, TEntity>(DbSet<TEntity> dbSet, IAppDb db, IMapper mapper) : IRepository<T> where TEntity : class, IEquatable<TEntity>
     {
         protected DbSet<TEntity> DbSet = dbSet;
         protected readonly IAppDb Db = db;
@@ -35,7 +35,8 @@ namespace MicroBlog.Data.EF.Repositories
 
         public async Task<T> Find(params object[] keys)
         {
-            return Mapper.Map<T>(await DbSet.FindAsync(keys).ConfigureAwait(false));
+            var entity = await DbSet.FindAsync(keys).ConfigureAwait(false);
+            return Mapper.Map<T>(entity);
         }
 
         public async Task<bool> Any(Expression<Func<T, bool>> predicate)
@@ -58,38 +59,88 @@ namespace MicroBlog.Data.EF.Repositories
             return Mapper.Map<T>(entity);
         }
 
-        public async Task CreateRange(IEnumerable<T> models)
+        public async Task<IEnumerable<T>> CreateRange(IEnumerable<T> models)
         {
             var entities = Mapper.Map<IEnumerable<TEntity>>(models);
             await DbSet.AddRangeAsync(entities).ConfigureAwait(false);
             await Db.SaveChangesAsync().ConfigureAwait(false);
+            return Mapper.Map<IEnumerable<T>>(entities);
         }
 
         public async Task Update(T model)
         {
             var entity = Mapper.Map<TEntity>(model);
-            DbSet.Update(entity);
+            var existingEntity = Db.ChangeTracker.Entries<TEntity>().FirstOrDefault(e => e.Entity.Equals(entity));
+            if (existingEntity != null)
+            {
+                DbSet.Entry(existingEntity.Entity).CurrentValues.SetValues(entity);
+            }
+            else
+            {
+                DbSet.Attach(entity);
+            }
             await Db.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task UpdateRange(IEnumerable<T> models)
         {
             var entities = Mapper.Map<IEnumerable<TEntity>>(models);
-            DbSet.UpdateRange(entities);
+            foreach (var entity in entities)
+            {
+                var existingEntity = Db.ChangeTracker.Entries<TEntity>().FirstOrDefault(e => e.Entity.Equals(entity));
+                if (existingEntity != null)
+                {
+                    DbSet.Entry(existingEntity.Entity).CurrentValues.SetValues(entity);
+                }
+                else
+                {
+                    DbSet.Attach(entity);
+                }
+            }
             await Db.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task Delete(T model)
         {
             var entity = Mapper.Map<TEntity>(model);
-            if (DbSet.Entry(entity).State == EntityState.Detached)
+            var existingEntity = Db.ChangeTracker.Entries<TEntity>().FirstOrDefault(e => e.Entity.Equals(entity));
+            if (existingEntity != null)
             {
-                DbSet.Attach(entity);
+                DbSet.Remove(existingEntity.Entity);
             }
-            DbSet.Remove(entity);
+            else
+            {
+                DbSet.Remove(entity);
+            }
             await Db.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public abstract Task DeleteRange(IEnumerable<T> models);
+        public async Task Delete(params object[] keys)
+        {
+            var entity = await DbSet.FindAsync(keys).ConfigureAwait(false);
+            if (entity != null)
+            {
+                DbSet.Remove(entity);
+                await Db.SaveChangesAsync().ConfigureAwait(false);
+            }
+        }
+
+        public async Task DeleteRange(IEnumerable<T> models)
+        {
+            var entities = Mapper.Map<IEnumerable<TEntity>>(models);
+            foreach (var entity in entities)
+            {
+                var existingEntity = Db.ChangeTracker.Entries<TEntity>().FirstOrDefault(e => e.Entity.Equals(entity));
+                if (existingEntity != null)
+                {
+                    DbSet.Remove(existingEntity.Entity);
+                }
+                else
+                {
+                    DbSet.Remove(entity);
+                }
+            }
+            await Db.SaveChangesAsync().ConfigureAwait(false);
+        }
     }
 }

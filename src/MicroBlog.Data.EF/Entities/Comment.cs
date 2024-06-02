@@ -2,7 +2,7 @@
 
 namespace MicroBlog.Data.EF.Entities
 {
-    public class Comment
+    public class Comment : IEquatable<Comment>
     {
         public Guid Id { get; set; }
         public required Guid PostId { get; set; }
@@ -11,5 +11,10 @@ namespace MicroBlog.Data.EF.Entities
         public required string Content { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
+
+        public bool Equals(Comment other)
+        {
+            return Id == other?.Id;
+        }
     }
 }

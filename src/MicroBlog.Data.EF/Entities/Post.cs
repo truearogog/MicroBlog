@@ -1,6 +1,6 @@
 ﻿namespace MicroBlog.Data.EF.Entities
 {
-    public class Post
+    public class Post : IEquatable<Post>
     {
         public Guid Id { get; set; }
         public required string Title { get; set; }
@@ -13,5 +13,10 @@
 
         public virtual ICollection<Reaction> Reactions { get; set; } = [];
         public virtual ICollection<Comment> Comments { get; set; } = [];
+
+        public bool Equals(Post? other)
+        {
+            return Id == other?.Id;
+        }
     }
 }

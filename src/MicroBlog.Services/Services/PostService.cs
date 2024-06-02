@@ -6,12 +6,12 @@ using System.Linq.Expressions;
 
 namespace MicroBlog.Services.Services
 {
-    public class PostService(IPostRepository postRepository, ISubscriptionRepository subscriptionRepository, 
-        UserManager userManager, IReactionService reactionService) : IPostService
+    public class PostService(IPostRepository postRepository, ISubscriptionRepository subscriptionRepository,
+        IUserManager userManager, IReactionService reactionService) : IPostService
     {
         private readonly IPostRepository _postRepository = postRepository;
         private readonly ISubscriptionRepository _subscriptionRepository = subscriptionRepository;
-        private readonly UserManager _userManager = userManager;
+        private readonly IUserManager _userManager = userManager;
         private readonly IReactionService _reactionService = reactionService;
 
         private async Task<IEnumerable<Post>> GetPostsAsync(Expression<Func<Post, bool>> filter, int skip, int take)

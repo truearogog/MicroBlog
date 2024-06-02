@@ -2,20 +2,19 @@
 using MicroBlog.Core.Repositories;
 using MicroBlog.Core.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace MicroBlog.Services.Services
 {
-    public class ReactionService(IReactionRepository reactionRepository, IMemoryCache memoryCache) : IReactionService
+    public class ReactionService(IReactionRepository reactionRepository, ICacheService cacheService) : IReactionService
     {
         private readonly IReactionRepository _reactionRepository = reactionRepository;
-        private readonly IMemoryCache _memoryCache = memoryCache;
+        private readonly ICacheService _cacheService = cacheService;
 
         public async Task<IReadOnlyDictionary<ReactionType, int>> GetReactionCountsAsync(Guid postId)
         {
-            var reactionCounts = await _memoryCache.GetOrCreateAsync(CacheNames.ReactionCounts + postId, async entry =>
+            var reactionCounts = await _cacheService.GetOrCreateAsync(CacheNames.ReactionCounts + postId, async entry =>
             {
-                var query = _reactionRepository.GetAll(x => x.PostId == postId);
+                var query = _reactionRepository.GetAll(x => x.PostId == postId, null);
                 var reactionTypes = Enum.GetValues<ReactionType>();
                 var reactionCounts = new Dictionary<ReactionType, int>();
                 foreach (var reactionType in reactionTypes)

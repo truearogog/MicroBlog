@@ -4,6 +4,5 @@ namespace MicroBlog.Core.Repositories
 {
     public interface IPostRepository : IUserRelatedRepository<Post>
     {
-        Task Delete(Guid id);
     }
 }

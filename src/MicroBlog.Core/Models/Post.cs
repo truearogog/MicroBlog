@@ -2,7 +2,7 @@
 
 namespace MicroBlog.Core.Models
 {
-    public class Post : IEquatable<Post>
+    public class Post
     {
         public Guid Id { get; set; }
         public required string Title { get; set; }
@@ -15,12 +15,5 @@ namespace MicroBlog.Core.Models
         public string UserName { get; set; } = string.Empty;
 
         public IReadOnlyDictionary<ReactionType, int> ReactionCounts { get; set; } = new Dictionary<ReactionType, int>();
-
-        public bool Equals(Post? other)
-        {
-            return Id == other?.Id;
-        }
-
-        public override bool Equals(object obj) => Equals(obj as Post);
     }
 }

@@ -2,7 +2,6 @@
 using MicroBlog.Core.Repositories;
 using MicroBlog.Data.EF.Profiles;
 using MicroBlog.Data.EF.Repositories;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroBlog.Data.EF.Extensions
@@ -10,32 +9,13 @@ namespace MicroBlog.Data.EF.Extensions
     public static class IoCExtensions
     {
         /// <summary>
-        /// Adds the DbContext and the default services needed to run
-        /// an application over Entity Framework Core.
-        /// </summary>
-        /// <param name="services">The current service collection</param>
-        /// <param name="dboptions">The DbContext options builder</param>
-        /// <param name="poolSize">The optional connection pool size. Default value is 128</param>
-        /// <param name="scope">The optional lifetime</param>
-        /// <typeparam name="T">The DbContext type</typeparam>
-        /// <returns>The updated service collection</returns>
-        public static IServiceCollection AddAppEF<T>(this IServiceCollection services,
-            Action<DbContextOptionsBuilder> dboptions, int poolSize = 128, ServiceLifetime scope = ServiceLifetime.Scoped) where T : DbContext, IAppDb
-        {
-            services.AddDbContextPool<T>(dboptions, poolSize);
-
-            return RegisterServices<T>(services, scope);
-        }
-
-        /// <summary>
         /// Adds the default services needed to run an application over Entity Framework Core.
         /// </summary>
         /// <param name="services">The current service collection</param>
         /// <param name="scope">The optional lifetime</param>
-        /// <typeparam name="T">The DbContext type</typeparam>
         /// <returns>The updated service collection</returns>
-        private static IServiceCollection RegisterServices<T>(this IServiceCollection services,
-            ServiceLifetime scope = ServiceLifetime.Scoped) where T : DbContext, IAppDb
+        public static IServiceCollection AddDataServices(this IServiceCollection services,
+            ServiceLifetime scope = ServiceLifetime.Scoped)
         {
             // Register repositories
             services.Add(new ServiceDescriptor(typeof(IPostRepository), typeof(PostRepository), scope));
@@ -44,9 +24,6 @@ namespace MicroBlog.Data.EF.Extensions
             services.Add(new ServiceDescriptor(typeof(IReactionRepository), typeof(ReactionRepository), scope));
             services.Add(new ServiceDescriptor(typeof(ICommentRepository), typeof(CommentRepository), scope));
             services.Add(new ServiceDescriptor(typeof(IImageRepository), typeof(ImageRepository), scope));
-
-            // Register services
-            services.Add(new ServiceDescriptor(typeof(IAppDb), typeof(T), scope));
 
             // Register AutoMapper
             var config = new MapperConfiguration(cfg =>

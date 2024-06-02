@@ -9,10 +9,11 @@ namespace MicroBlog.Core.Repositories
         Task<bool> Any(Expression<Func<T, bool>> predicate);
         Task<bool> All(Expression<Func<T, bool>> predicate);
         Task<T> Create(T model);
-        Task CreateRange(IEnumerable<T> models);
+        Task<IEnumerable<T>> CreateRange(IEnumerable<T> models);
         Task Update(T model);
         Task UpdateRange(IEnumerable<T> models);
         Task Delete(T model);
+        Task Delete(params object[] keys);
         Task DeleteRange(IEnumerable<T> models);
     }
 }

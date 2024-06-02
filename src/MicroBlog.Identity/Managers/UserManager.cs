@@ -1,8 +1,8 @@
 ﻿using MicroBlog.Core.Constants;
+using MicroBlog.Core.Services;
 using MicroBlog.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Linq.Expressions;
@@ -19,10 +19,10 @@ namespace MicroBlog.Identity.Managers
         IdentityErrorDescriber errors, 
         IServiceProvider services, 
         ILogger<UserManager<User>> logger, 
-        IMemoryCache memoryCache) : 
-        UserManager<User>(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
+        ICacheService cacheService) : 
+        UserManager<User>(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger), IUserManager
     {
-        private readonly IMemoryCache _memoryCache = memoryCache;
+        private readonly ICacheService _cacheService = cacheService;
 
         public async Task<IdentityResult> SetProfilePictureAsync(User user, string? profilePictureUrl)
         {
@@ -30,7 +30,7 @@ namespace MicroBlog.Identity.Managers
             ArgumentNullException.ThrowIfNull(user);
 
             user.ProfilePictureUrl = profilePictureUrl;
-            _memoryCache.Remove(CacheNames.UserProfilePictureUrl + user.Id);
+            _cacheService.Remove(CacheNames.UserProfilePictureUrl + user.Id);
             await UpdateSecurityStampAsync(user).ConfigureAwait(false);
             return await UpdateAsync(user).ConfigureAwait(false);
         }
@@ -40,7 +40,7 @@ namespace MicroBlog.Identity.Managers
             ThrowIfDisposed();
             ArgumentException.ThrowIfNullOrEmpty(userId);
 
-            var profilePictureUrl = await _memoryCache.GetOrCreateAsync(CacheNames.UserProfilePictureUrl + userId, async entry =>
+            var profilePictureUrl = await _cacheService.GetOrCreateAsync(CacheNames.UserProfilePictureUrl + userId, async entry =>
             {
                 var user = await FindByIdAsync(userId);
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
@@ -52,7 +52,7 @@ namespace MicroBlog.Identity.Managers
 
         public override Task<IdentityResult> SetUserNameAsync(User user, string? userName)
         {
-            _memoryCache.Remove(CacheNames.Username + user.Id);
+            _cacheService.Remove(CacheNames.Username + user.Id);
             return base.SetUserNameAsync(user, userName);
         }
 
@@ -61,7 +61,7 @@ namespace MicroBlog.Identity.Managers
             ThrowIfDisposed();
             ArgumentException.ThrowIfNullOrEmpty(userId);
 
-            var username = await _memoryCache.GetOrCreateAsync(CacheNames.Username + userId, async entry =>
+            var username = await _cacheService.GetOrCreateAsync(CacheNames.Username + userId, async entry =>
             {
                 var user = await FindByIdAsync(userId);
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);

@@ -1,8 +1,9 @@
 using MicroBlog.Data.EF.Extensions;
-using MicroBlog.Data.EF.SQLServer;
+using MicroBlog.Data.EF.SQLServer.Extensions;
 using MicroBlog.Identity.Extensions;
 using MicroBlog.Identity.Models;
 using MicroBlog.Identity.SQLServer;
+using MicroBlog.Identity.SQLServer.Extensions;
 using MicroBlog.Services.Extensions;
 using MicroBlog.Web.Extensions;
 using MicroBlog.Web.Middleware;
@@ -19,13 +20,12 @@ namespace MicroBlog.Web
 
             builder.Services.AddWorkers();
             builder.Services.AddServices();
-            builder.Services.AddAppEF<SQLServerAppDb>(options => {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("AppDb") ?? throw new InvalidOperationException("Connection string 'AppDb' not found."));
-                options.UseLazyLoadingProxies();
-            });
+            builder.Services.AddDataServices();
+            builder.Services.AddAppEF(builder.Configuration.GetConnectionString("AppDb") ?? throw new InvalidOperationException("Connection string 'AppDb' not found."),
+                o => o.UseLazyLoadingProxies());
 
-            builder.Services.AddIdentityEF<SQLServerIdentityDb>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityDb")
-                ?? throw new InvalidOperationException("Connection string 'IdentityDb' not found.")));
+            builder.Services.AddIdentityServices();
+            builder.Services.AddIdentityEF(builder.Configuration.GetConnectionString("IdentityDb") ?? throw new InvalidOperationException("Connection string 'IdentityDb' not found."));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedEmail = false)

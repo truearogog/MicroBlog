@@ -1,4 +1,5 @@
 ﻿using MicroBlog.Data.EF.Entities;
+using MicroBlog.Data.EF.ValueGenerators;
 using Microsoft.EntityFrameworkCore;
 
 namespace MicroBlog.Data.EF
@@ -18,6 +19,10 @@ namespace MicroBlog.Data.EF
 
             modelBuilder.Entity<Post>().HasKey(x => x.Id);
             modelBuilder.Entity<Post>().HasIndex(x => x.UserId);
+            modelBuilder.Entity<Post>().Property(x => x.Created)
+                .HasValueGenerator<CurrentTimeValueGenerator>().ValueGeneratedOnAdd();
+            modelBuilder.Entity<Post>().Property(x => x.Updated)
+                .HasValueGenerator<CurrentTimeValueGenerator>().ValueGeneratedOnAddOrUpdate();
 
             modelBuilder.Entity<Subscription>().HasKey(x => new { x.FromUserId, x.ToUserId });
 
@@ -31,6 +36,10 @@ namespace MicroBlog.Data.EF
             modelBuilder.Entity<Comment>().HasIndex(x => x.PostId);
             modelBuilder.Entity<Comment>().HasOne(x => x.Post).WithMany(x => x.Comments).HasForeignKey(x => x.PostId)
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Comment>().Property(x => x.Created)
+                .HasValueGenerator<CurrentTimeValueGenerator>().ValueGeneratedOnAdd();
+            modelBuilder.Entity<Comment>().Property(x => x.Updated)
+                .HasValueGenerator<CurrentTimeValueGenerator>().ValueGeneratedOnAddOrUpdate();
 
             modelBuilder.Entity<Image>().HasKey(x => x.Path);
             modelBuilder.Entity<Image>().HasIndex(x => x.UserId);

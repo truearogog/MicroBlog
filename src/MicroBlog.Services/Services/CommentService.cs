@@ -5,10 +5,10 @@ using MicroBlog.Identity.Managers;
 
 namespace MicroBlog.Services.Services
 {
-    public class CommentService(ICommentRepository commentRepository, UserManager userManager) : ICommentService
+    public class CommentService(ICommentRepository commentRepository, IUserManager userManager) : ICommentService
     {
         private readonly ICommentRepository _commentRepository = commentRepository;
-        private readonly UserManager _userManager = userManager;
+        private readonly IUserManager _userManager = userManager;
 
         private async Task LoadComment(Comment comment)
         {
