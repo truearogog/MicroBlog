@@ -32,7 +32,7 @@ namespace MicroBlog.Data.EF.SQLServer.Migrations
 
                     b.HasKey("UserId", "BlockedUserId");
 
-                    b.ToTable("Blocks");
+                    b.ToTable("Blocks", (string)null);
                 });
 
             modelBuilder.Entity("MicroBlog.Data.EF.Entities.Comment", b =>
@@ -64,7 +64,7 @@ namespace MicroBlog.Data.EF.SQLServer.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("MicroBlog.Data.EF.Entities.Image", b =>
@@ -80,7 +80,7 @@ namespace MicroBlog.Data.EF.SQLServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("MicroBlog.Data.EF.Entities.Post", b =>
@@ -115,7 +115,7 @@ namespace MicroBlog.Data.EF.SQLServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("MicroBlog.Data.EF.Entities.Reaction", b =>
@@ -131,7 +131,7 @@ namespace MicroBlog.Data.EF.SQLServer.Migrations
 
                     b.HasKey("PostId", "UserId", "Type");
 
-                    b.ToTable("Reactions");
+                    b.ToTable("Reactions", (string)null);
                 });
 
             modelBuilder.Entity("MicroBlog.Data.EF.Entities.Subscription", b =>
@@ -144,7 +144,7 @@ namespace MicroBlog.Data.EF.SQLServer.Migrations
 
                     b.HasKey("FromUserId", "ToUserId");
 
-                    b.ToTable("Subscriptions");
+                    b.ToTable("Subscriptions", (string)null);
                 });
 
             modelBuilder.Entity("MicroBlog.Data.EF.Entities.Comment", b =>
