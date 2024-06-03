@@ -9,11 +9,11 @@ namespace MicroBlog.Services.Extensions
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             // Register services
-            services.AddTransient<ICacheService, CacheService>();
             services.AddTransient<IPostService, PostService>();
             services.AddTransient<IReactionService, ReactionService>();
             services.AddTransient<ICommentService, CommentService>();
             services.AddSingleton<IUserLoggingService, UserLoggingService>();
+            services.AddSingleton<ICacheService, CacheService>();
 
             return services;
         }
