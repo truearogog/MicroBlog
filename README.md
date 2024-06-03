@@ -31,7 +31,7 @@ Lai uzstādītu un palaistu Microblog sistēmu, ir jāveic sekojošas darbības:
     - Pārvietojiet attēlus no mapes `...\MicroBlog\demo\demouploads` uz mapi `...\MicroBlog\src\MicroBlog.Web\wwwroot\uploads`.
 
 4. **Projekta palaišana**:
-    - Lai palaistu tīmekļa vietni, atveriet termināli projekta saknes mapē un izpildiet komandu:
+    - Lai palaistu tīmekļa vietni, atveriet termināli projekta `...\MicroBlog.Web` mapē un izpildiet komandu:
         ```sh
         dotnet run
         ```
